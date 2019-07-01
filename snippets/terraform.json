@@ -1,0 +1,78 @@
+{
+  "terraform": {
+    "scope": "source.tf",
+    "prefix": "terraform",
+    "body": [
+      "terraform {",
+      "  required_version = \"~> ${1:0.12.1}\"",
+      "}"
+    ],
+    "description": "terraform block"
+  },
+  "locals": {
+    "scope": "source.tf",
+    "prefix": "locals",
+    "body": [
+      "locals {",
+      "  ${1:name} = $2",
+      "}"
+    ],
+    "description": "locals block"
+  },
+  "module": {
+    "scope": "source.tf",
+    "prefix": "module",
+    "body": [
+      "module \"${1:name}\" {",
+      "  source  = \"$2\"",
+      "",
+      "  version = \"$3\"",
+      "  name    = \"$4\"",
+      "}"
+    ],
+    "description": "locals block"
+  },
+  "variable": {
+    "scope": "source.tf",
+    "prefix": "variable",
+    "body": [
+      "variable \"${1:name}\" {",
+      "  type        = ${2|string,number,bool,list,map,object,tuple,any|}",
+      "  default     = $3",
+      "  description = \"$4\"",
+      "}"
+    ],
+    "description": "locals block"
+  },
+  "output": {
+    "scope": "source.tf",
+    "prefix": "output",
+    "body": [
+      "output \"${1:name}\" {",
+      "  value       = $2",
+      "  description = \"$3\"",
+      "}"
+    ],
+    "description": "output block"
+  },
+  "resource": {
+    "scope": "source.tf",
+    "prefix": "resource",
+    "body": [
+      "resource \"$1\" \"$2\" {",
+      "  $3",
+      "}"
+    ],
+    "description": "resource block"
+  },
+  "data": {
+    "scope": "source.tf",
+    "prefix": "data",
+    "body": [
+      "data \"$1\" \"$2\" {",
+      "  $3",
+      "}"
+    ],
+    "description": "data block"
+  }
+}

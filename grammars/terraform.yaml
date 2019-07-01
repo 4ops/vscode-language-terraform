@@ -1,0 +1,52 @@
+name: Terraform
+scopeName: source.tf
+fileTypes: [tf]
+
+patterns:
+
+- comment: Comments
+  name: comment.line.tf
+  begin: '#|//'
+  end: $\n?
+  captures:
+    '0': {name: punctuation.definition.comment.tf}
+
+- comment: Block comments
+  name: comment.block.tf
+  begin: /\*
+  end: \*/
+  captures:
+    '0': {name: punctuation.definition.comment.tf}
+
+- comment: Nested Blocks
+  name: meta.block.tf
+  begin: "{"
+  beginCaptures:
+    '0': {name: punctuation.definition.block.tf}
+  end: "}"
+  endCaptures:
+    '0': {name: punctuation.definition.block.tf}
+  patterns:
+    - include: "$self"
+
+- comment: Quoted Block Labels
+  match: '(")([^"]+)(")'
+  captures:
+    '1': {name: string.tf punctuation.definition.string.begin.tf}
+    '2': {name: string.value.tf}
+    '3': {name: string.tf punctuation.definition.string.end.tf}
+
+- comment: Attribute Definitions
+  name: meta.attr.tf
+  begin: '(\w+)\s*(=)\s*'
+  beginCaptures:
+    '1': {name: variable.other.assignment.tf}
+    '2': {name: keyword.operator.tf}
+  end: '$'
+  patterns:
+    - include: "source.tfexpr"
+
+- comment: Keywords
+  match: '[-\w]+'
+  captures:
+    '0': {name: keyword.other.tf}

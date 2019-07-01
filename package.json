@@ -1,0 +1,80 @@
+{
+  "name": "terraform",
+  "displayName": "Terraform",
+  "description": "Terraform configuration language support",
+  "version": "0.0.0",
+  "icon": "icon.png",
+  "keywords": [
+    "terraform",
+    "tf",
+    "tfvars",
+    "tfstate",
+    "hashicorp",
+    "hcl"
+  ],
+  "publisher": "4ops",
+  "author": {
+    "name": "Anton Kulikov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4ops/vscode-language-terraform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/4ops/vscode-language-terraform/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.34.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "terraform",
+        "aliases": [
+          "Terraform",
+          "tf"
+        ],
+        "extensions": [
+          ".tf"
+        ],
+        "configuration": "./languages/terraform.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "terraform",
+        "scopeName": "source.tf",
+        "path": "./grammars/terraform.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "terraform",
+        "path": "./snippets/terraform.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "vsce package",
+    "compile": "node scripts/compile.js",
+    "pretest": "npm run compile -s",
+    "prebuild": "npm test -s",
+    "preversion": "git add -A .",
+    "postversion": "npm run push -s",
+    "prepush": "git push",
+    "push": "git push --tags",
+    "postpush": "echo vsce publish",
+    "test": "echo No tests are implemented",
+    "version": "npm run build -s"
+  },
+  "devDependencies": {
+    "js-yaml": "^3.13.1",
+    "vsce": "^1.64.0"
+  },
+  "dependencies": {}
+}

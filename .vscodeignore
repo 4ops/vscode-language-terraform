@@ -1,0 +1,29 @@
+# Git settings
+.gitignore
+.gitattributes
+
+# Code styling settings
+.editorconfig
+.prettierignore
+.prettierrc
+
+# Visual Studio Code settings for extension development
+.vscode/
+
+# Development tools
+.local/
+scripts/
+examples/
+node_modules/
+package-lock.json
+
+# Keep only JSON grammars
+grammars/**
+!grammars/*.json
+
+# Output
+*.log
+
+# Other documents
+*.md
+!README.md
