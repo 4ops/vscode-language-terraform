@@ -42,13 +42,13 @@
         "extensions": [
           ".tf"
         ],
-        "configuration": "./languages/terraform.json"
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
       {
         "language": "terraform",
-        "scopeName": "source.tf",
+        "scopeName": "source.terraform",
         "path": "./grammars/terraform.json"
       }
     ],
