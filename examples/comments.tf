@@ -1,77 +1,70 @@
-locals{// comment
-  var1 = "value #asd /*1*/" // comment
-  var2 = 3         # comment
-/*sdfsadf*/var3 = false#aaa
-  var5=1//
-  var6/*       */=/*        */null//aaa
-}
-/kjlkj                   // *** not valid ***
-   / /;lk;l              // *** not valid ***
-  #as
-#as
-//as
-block {
-fff = <<DOC
-  /* sdfsdf */
-DOC
+  h  i
+#comment
+  not-a-comment
+//  comment
+/*     *           comment */
+    /*  cff
 
-ggg = "${value} $${value}               %{if var.name == ""}${other_value}%{endif                                ~}"
+    fd
+h  i
+  afffb
 
-fff = <<DOC
-  ${value}
-  %{if var.name == ""}
-               $${other_value}                  ${other_value}
-  %{                else  }
-   lkjlkjlkjlkj
-  %{endif                                ~}
-DOC
-}
-/**/
+b    */
+ not-a-comment  # comment
+      //       comment
+           /**/ not-a-commentk
 
-locals {
- aaa= false
+  not-a-comment # comment
+      not-a-comment//comment
+           not-a-comment/*comment*/not-a-comment
 
- b =      var.name == "" ? "1" : local.value ? true : "false"
-                        c                      =(a && b)
-/*} */
-     }
+  not-a-comment # */ comment
+      not-a-comment//
+           not-a-comment/**/not-a-comment
 
-# sdfsdfsdfsdfdfsdf '*/
+ //#// line comment // line comment /* comment block */
+// line comment  # line comment /* comment block */
+/*comment block */ // line comment  # line comment
 
-   //
-   //lkjlkjlkj
-// kijlkjlkj
-     #aaa
-     #hhh
-       / / / / / #cco     // *** not valid ***
-//123
-                      locals{// comment
-  var1 = "value 1" // comment
-  var2 = 3         # comment
-/*sdfsadf*/var3 = (local.value == false)#aaa
+/* /*
+# line comment
+// line comment
+  /* line comment */
+*/ // <----- not-a-comment at begin of line but this is a comment
+
+/** comment*/
+//comment*/
+#comment*/
+/*comment*/
+
+/************************************************/
+#/****************************************/#################
+
+/
+*
+*/
+
+string-test "#" not-a-comment
 
 
+string-test "//" not-a-comment
 
-/*  var.name = max([14, local.num]) */name = max([14, local.num])
+         string-test "\"/*comment" must-be-comment          "/*comment*/" not-a-comment
 
-  var5=1//
-  var6/*       */=/*        */null//aaa
-}
-/*sdfsadf*/locals               {// comment
-  var1 = "value 1" // comment
-  var2 = 3         # comment
-/*sdfsadf*/var3 = false#aaa
-  var5=1//
-  var6/*       */=/*        */null//aaa
-}
-locals{						// comment
-  var1 = "value 1" // comment
-  var2 /*       */ = 3         # comment
-/*sdfsadf*/var3 = false#aaa
-  var5=1//
-  var6/*       */=/*        */null//aaa
-}
-locals					{// comment
-}
-locals					{}
+string-test "/*comment*/" not-a-comment
 
+var1=<<NOTACOMMENTINSIDE
+# not-a-comment
+  // not-a-comment
+  /* not-a-comment */
+  /* not-a-comment */ // not-a-comment # not-a-comment
+NOTACOMMENTINSIDE
+
+var2/*comment*/=/*comment*/value//comment
+var3/*comment*/=/*comment*/"value"//comment
+var4/*comment*/=/*comment*/<<NOTACOMMENTINSIDE//comment
+# not-a-comment
+  // not-a-comment
+  /* not-a-comment */
+  /* not-a-comment */ // not-a-comment # not-a-comment
+NOTACOMMENTINSIDE #comment

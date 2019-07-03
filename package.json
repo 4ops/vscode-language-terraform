@@ -37,10 +37,12 @@
         "id": "terraform",
         "aliases": [
           "Terraform",
-          "tf"
+          "tf",
+          "tfvars"
         ],
         "extensions": [
-          ".tf"
+          ".tf",
+          ".tfvars"
         ],
         "configuration": "./language-configuration.json"
       }

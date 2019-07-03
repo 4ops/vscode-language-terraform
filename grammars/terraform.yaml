@@ -1,240 +1,116 @@
 name: Terraform
 scopeName: source.terraform
-fileTypes: [tf]
+fileTypes: [tf,tfvars,tpl,tmpl]
 uuid: dd7316da-3634-49ed-a8ea-d72e64bfb1a0
 
 patterns:
-- comment: Comments
-  name: comment.line.terraform
-  begin: '#|//'
-  end: $\n?
-  captures:
-    '0': { name: punctuation.definition.comment.terraform }
-
-- comment: Block comments
-  name: comment.block.terraform
-  begin: /\*
-  end: \*/
-  captures:
-    '0': { name: punctuation.definition.comment.terraform }
-
-- comment: Nested Blocks
-  name: meta.block.terraform
-  begin: "{"
-  beginCaptures:
-    '0': { name: punctuation.definition.block.terraform }
-  end: "}"
-  endCaptures:
-    '0': { name: punctuation.definition.block.terraform }
-  patterns:
-  - include: "$self"
-
-- comment: Quoted Block Labels
-  match: '(")([^"]+)(")'
-  captures:
-    '1': { name: string.terraform punctuation.definition.string.begin.terraform }
-    '2': { name: string.value.terraform }
-    '3': { name: string.terraform punctuation.definition.string.end.terraform }
-
-- comment: Attribute Definitions
-  name: meta.attr.terraform
-  begin: '(\w+)\s*(=)\s*'
-  beginCaptures:
-    '1': { name: variable.other.assignment.terraform }
-    '2': { name: keyword.operator.terraform }
-  end: '$'
-  patterns:
-  - include: '#heredoc'
-  - include: '#parentheses'
-  - include: '#functions'
-  - include: '#constants'
-  - include: '#numbers'
-  - include: '#contructors'
-  - include: '#operators'
-  - include: '#words'
-  - include: '#strings'
-
-- include: '#keywords'
+- include: '#block-terraform'
+- include: '#block-provider'
+- include: '#block-locals'
+- include: '#block-variable'
+- include: '#block-output'
+- include: '#block-module'
+- include: '#block-resource'
+- include: '#block-data'
 
 repository:
-  keywords:
+
+# --- Top-level Blocks
+
+  block-terraform:
+    begin: ^\s*(terraform)\s*({)
+    beginCaptures:
+      1: { name: keyword.other.terraform }
+      2: { name: meta.configuration.terraform punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
+
+  block-provider:
+    begin: ^\s*(provider)\s*(")([a-z]+[-\w]*)(")\s*({)
+    beginCaptures:
+      1: { name: keyword.other.provider.terraform }
+      2: { name: punctuation.definition.string.begin.terraform }
+      3: { name: meta.provider.configuration.terraform  string.quoted.double.terraform entity.name.provider.terraform }
+      4: { name: punctuation.definition.string.end.terraform }
+      5: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
     patterns:
-    - comment: Keywords
-      match: '[-\w]+?\b'
-      captures:
-        '0': { name: keyword.other.terraform }
+    - include: '$self'
 
-  constants:
-    patterns:
-    - comment: Language constants (true, false, null)
-      name: constant.language.terraform
-      match: \b(true|false|null)\b
+  block-locals:
+    begin: ^\s*(locals)\s*({)
+    beginCaptures:
+      1: { name: keyword.other.locals.terraform }
+      2: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
 
-  numbers:
-    patterns:
-    - comment: Numbers
-      name: constant.numeric.terraform
-      match: \b([0-9]+)(.[0-9]+)?([eE][0-9]+)?\b
+  block-variable:
+    begin: ^\s*(variable)\s*(")([a-z]+[-\w]*)(")\s*({)
+    beginCaptures:
+      1: { name: keyword.other.variable.terraform }
+      2: { name: punctuation.definition.string.begin.terraform }
+      3: { name: meta.variable.name.terraform string.quoted.double.terraform entity.name.variable.terraform }
+      4: { name: punctuation.definition.string.end.terraform }
+      5: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
 
-  functions:
-    patterns:
-    - comment: Function Calls
-      begin: ([-\w]+)(\()
-      beginCaptures:
-        '1': { name: keyword.other.function.inline.terraform }
-        '2': { name: keyword.other.section.begin.terraform }
-      end: (\))
-      endCaptures:
-        '1': { name: keyword.other.section.end.terraform }
-      patterns:
-      - include: '$self'
+  block-output:
+    begin: ^\s*(output)\s*(")([a-z]+[-\w]*)(")\s*({)
+    beginCaptures:
+      1: { name: keyword.other.output.terraform }
+      2: { name: punctuation.definition.string.begin.terraform }
+      3: { name: meta.output.name.terraform string.quoted.double.terraform entity.name.output.terraform }
+      4: { name: punctuation.definition.string.end.terraform }
+      5: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
 
-  words:
-    patterns:
-    - comment: Variables and Attribute Names
-      match: '[-\w]+'
-      captures:
-        '0': { name: variable.other.terraform }
+  block-module:
+    begin: ^\s*(module)\s*(")([a-z]+[-\w]*)(")\s*({)
+    beginCaptures:
+      1: { name: keyword.other.module.terraform }
+      2: { name: punctuation.definition.string.begin.terraform }
+      3: { name: string.quoted.double.terraform entity.name.module.terraform }
+      4: { name: punctuation.definition.string.end.terraform }
+      5: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
 
-  heredoc:
-    patterns:
-    - comment: Heredoc Templates
-      begin: (?>\s*<<(\w+))
-      beginCaptures:
-        '0': { name: punctuation.definition.string.begin.terraform }
-        '1': { name: keyword.operator.heredoc.terraform }
-      end: ^\s*\1$
-      endCaptures:
-        '0': { name: punctuation.definition.string.end.terraform keyword.operator.heredoc.terraform }
-      patterns:
-      - include: '#interpolation'
+  block-resource:
+    begin: ^\s*(resource)\s*(")([a-z]+[-\w]*)(")\s+(")([a-z]+[-\w]*)(")\s*({)
+    beginCaptures:
+      1: { name: keyword.other.resource.terraform }
+      2: { name: punctuation.definition.string.begin.terraform }
+      3: { name: meta.resource.provider string.quoted.double.terraform support.function.data.terraform }
+      4: { name: punctuation.definition.string.end.terraform }
+      5: { name: punctuation.definition.string.begin.terraform }
+      6: { name: meta.resource.name string.quoted.double.terraform entity.name.resource.terraform }
+      7: { name: punctuation.definition.string.end.terraform }
+      8: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
 
-  strings:
-    patterns:
-    - comment: String Templates
-      name: "string.quoted.double.terraform"
-      begin: \"
-      beginCaptures:
-        '0': { name: string.terraform punctuation.definition.string.begin.terraform }
-      end: \"
-      endCaptures:
-        '1': { name: string.terraform punctuation.definition.string.end.terraform }
-      patterns:
-      - include: '#interpolation'
-      - include: '#templates'
-
-  operators:
-    patterns:
-    - comment: Operators
-      match: '(!=|==|>=|<=|&&|\|\||[-+*/%<>!?:])'
-      captures:
-        '0': { name: keyword.operator.terraform }
-
-  parentheses:
-    patterns:
-    - comment: Parentheses
-      begin: '\('
-      beginCaptures:
-        '0': { name: meta.brace.round.terraform }
-      end: '\)'
-      endCaptures:
-        '0': { name: meta.brace.round.terraform }
-      patterns:
-      - include: '$self'
-
-  contructors:
-    patterns:
-    - comment: Tuple Constructor
-      begin: '\['
-      beginCaptures:
-        '0': { name: meta.brace.square.terraform }
-      end: '\]'
-      endCaptures:
-        '0': { name: meta.brace.square.terraform }
-      patterns:
-      - match: '(for|in)'
-        captures:
-          '0': { name: keyword.control.terraform }
-      - include: '$self'
-    - comment: Object Constructor
-      begin: '\{'
-      beginCaptures:
-        '0': { name: meta.brace.curly.terraform }
-      end: '\}'
-      endCaptures:
-        '0': { name: meta.brace.curly.terraform }
-      patterns:
-      - match: '(for|in)'
-        captures:
-          '0': { name: keyword.control.terraform }
-      - match: '(=>|\.\.\.)'
-        captures:
-          '0': { name: keyword.operator.terraform }
-      - include: '$self'
-
-  interpolation:
-    patterns:
-    - comment: Interpolation Sequences
-      name: meta.interpolation.terraform
-      begin: '[^\$]?(\$\{~?)'
-      beginCaptures:
-        '1': { name: entity.tag.embedded.start.terraform }
-      end: '~?}'
-      endCaptures:
-        '0': { name: entity.tag.embedded.end.terraform }
-      # patterns:
-      # - include: '#constants'
-      # - include: '#numbers'
-      # - include: '#functions'
-      # - include: '#operators'
-      # - include: '#strings'
-
-  templates:
-    patterns:
-    - comment: Control Sequences
-      name: meta.control.terraform
-      begin: '[^\%]?(\%\{~?)'
-      beginCaptures:
-        '1': { name: entity.tag.embedded.start.terraform }
-      end: '~?}'
-      endCaptures:
-        '0': { name: entity.tag.embedded.end.terraform }
-      # patterns:
-      # - include: "#templateif"
-      # - include: "#templatefor"
-      # - include: "#templatesimplekw"
-
-  # templateif:
-  #   name: meta.templateif.terraform
-  #   begin: '(if)\s*'
-  #   beginCaptures:
-  #     '1': { name: keyword.control.terraform }
-  #   end: '(?=~?\})'
-  #   patterns:
-  #   - include: '#constants'
-  #   - include: '#numbers'
-  #   - include: '#functions'
-  #   - include: '#contructors'
-  #   - include: '#operators'
-
-  # templatefor:
-  #   name: meta.templatefor.terraform
-  #   begin: '(for)\s*(\w+)\s*(,\s*(\w+)\s*)?(in)'
-  #   beginCaptures:
-  #     '1': { name: keyword.control.terraform }
-  #     '2': { name: variable.other.terraform }
-  #     '4': { name: variable.other.terraform }
-  #     '5': { name: keyword.control.terraform }
-  #   end: '(?=~?\})'
-  #   patterns:
-  #   - include: '#constants'
-  #   - include: '#numbers'
-  #   - include: '#functions'
-  #   - include: '#contructors'
-  #   - include: '#operators'
-
-  # templatesimplekw:
-  #   patterns:
-  #   - match: (else|endif|endfor)
-  #     captures:
-  #       '0': { name: keyword.control.terraform }
+  block-data:
+    begin: ^\s*(data)\s*(")([a-z]+[-\w]*)(")\s+(")([a-z]+[-\w]*)(")\s*({)
+    beginCaptures:
+      1: { name: keyword.other.data.terraform }
+      2: { name: punctuation.definition.string.begin.terraform }
+      3: { name: meta.data.provider string.quoted.double.terraform support.function.data.terraform }
+      4: { name: punctuation.definition.string.end.terraform }
+      5: { name: punctuation.definition.string.begin.terraform }
+      6: { name: meta.data.name string.quoted.double.terraform entity.name.data.terraform }
+      7: { name: punctuation.definition.string.end.terraform }
+      8: { name: punctuation.definition.bracket.curly.begin.terraform }
+    end: ^\s*(})
+    endCaptures:
+      1: { name: punctuation.definition.bracket.curly.end.terraform }
