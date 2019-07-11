@@ -1,12 +1,10 @@
-variable "empty_test" {
+   variable    "empty_test" {}
+
+variable "empty-test"     {
 
 }
 
-variable "empty-test" {
-
-}
-
-variable "name" {
+variable     "name" {
   type = string
 
   default = "bitcoin"
@@ -18,9 +16,12 @@ variable "name" {
 }
 
 variable "servers" {
-  type = number
+  type = map
 
-  default = 1
+  default = {
+    asd = "123",
+    zxc = 1
+  }
 
   description = <<-DESCRIPTION
     Count of servers to create.
@@ -221,7 +222,7 @@ variable "bitcoin_rpc_password" {
   DESCRIPTION
 }
 
-variable "bitcoin_testnet_extra_args" {
+    variable    "bitcoin_testnet_extra_args"     {
   type = list
 
   default = [

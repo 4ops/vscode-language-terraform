@@ -26,4 +26,4 @@ grammars/**
 
 # Other documents
 *.md
-!README.md
+!/README.md

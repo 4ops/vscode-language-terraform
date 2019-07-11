@@ -1,4 +1,9 @@
-terraform {
+     terraform  {
+       required_version = "~> 0.12.1"
+  {    }
+     }
+
+}
   required_version = "~> 0.12.1"
 
   required_providers {
@@ -10,7 +15,9 @@ terraform {
   }
 }
 
-module "hostname" {
+/* comment */
+    module "hostname" {
+      module= "hostname"
   source    = "4ops/hostname-generator/template"
   version   = "1.0.0"
   prefix    = var.name
@@ -19,31 +26,37 @@ module "hostname" {
   servers   = var.servers
 }
 
-locals {
+locals/**/g/**/  {
+  {
   all_hosts = ["0.0.0.0/0", "::/0"]
   all_ports = "1-65535"
-
+{}
   bitcoin_rpc_password = var.bitcoin_rpc_password != "" ? var.bitcoin_rpc_password : join("", random_string.bitcoin_rpc_password[*].result)
   bitcoin_extra_args   = var.bitcoin_network == "testnet" ? var.bitcoin_testnet_extra_args : var.bitcoin_mainnet_extra_args
 
   service_dir = "/srv/${var.name}"
 }
 
-resource "tls_private_key" "provisioner" {
-  count = var.servers > 0 ? 1 : 0
+      resource aa "tls_priv{ate_key" "provisioner" {
+  count = var.servers > 0 ? 1 : 0    }
 
   algorithm   = "ECDSA"
   ecdsa_curve = "P521"
 }
 
-resource "random_string" "bitcoin_rpc_password" {
+resource /*asd*/ "random_string" /**jjj*/ "bitcoin_rpc_password" {
   count = var.servers > 0 ? 1 : 0
 
   length  = 32
   special = false
 }
+/*
 
-resource "digitalocean_firewall" "network_policy" {
+
+
+jjjj
+*/
+   resource "digitalocean_firewall" "network_policy" {
   count = var.servers > 0 ? 1 : 0
 
   name = "droplet-policy-${var.name}"

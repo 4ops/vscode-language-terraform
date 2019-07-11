@@ -34,30 +34,28 @@
   "contributes": {
     "languages": [
       {
-        "id": "terraform",
+        "id": "tf",
         "aliases": [
           "Terraform",
-          "tf",
-          "tfvars"
+          "terraform"
         ],
         "extensions": [
-          ".tf",
-          ".tfvars"
+          ".tf"
         ],
         "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
       {
-        "language": "terraform",
-        "scopeName": "source.terraform",
-        "path": "./grammars/terraform.json"
+        "language": "tf",
+        "scopeName": "source.tf",
+        "path": "./grammars/tf.json"
       }
     ],
     "snippets": [
       {
-        "language": "terraform",
-        "path": "./snippets/terraform.json"
+        "language": "tf",
+        "path": "./snippets/tf.json"
       }
     ]
   },

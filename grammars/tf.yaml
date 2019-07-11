@@ -1,0 +1,121 @@
+name: Terraform
+scopeName: source.tf
+fileTypes: [tf]
+uuid: 20a13a67-f65e-4e41-ae19-f18395d3312e
+
+patterns:
+  - include: '#block-declaration'
+  - include: '#comment'
+  # - include: '#invalid'
+
+repository:
+# --- Dev notes
+  #
+  # (?<=})
+  # (?<=begin).+?(?=end)
+  # (")([^\"]*)?(")
+  # (?=\{|\n)
+  # ([a-z]+[\-\w]*)
+  #
+  # keyword.declaration.$1.tf
+  # meta.block.$1.tf
+  # punctuation.section.block.begin.tf ... punctuation.section.block.end.tf
+  # punctuation.definition.string.begin.tf ... punctuation.definition.string.end.tf
+  # meta.string.tf
+  # string.quoted.double.tf
+
+# --- Dev utils
+  debug: # underline non-space characters
+    patterns:
+      - name: markup.underline
+        match: \S
+
+  strong: # mark invalid non-space characters from last success match
+    patterns:
+      - match: '\G\S'
+        name: invalid.illegal.declaration.tf
+
+# --- Block
+  block-declaration:
+    patterns:
+      - begin: '\b(terraform|locals|provider|module|variable|output|data|resource)\b'
+        beginCaptures:
+          1: { name: keyword.declaration.$1.tf }
+        end: '(?<=})'
+        name: meta.block.$1.tf
+        patterns:
+          - match: (?<=provider)\s*(")([^\"]*)?(")
+            name: keyword.declaration.$1.tf
+      # - match: (?<=\bterraform)...
+      #   name: keyword.declaration.$1.tf
+      # - include: '#debug'
+      # - begin: '(?=\b(terraform|locals|provider|module|variable|output|data|resource)\b)'
+      #   name: string.test
+      # - match: '(?<=\bterraform\b|\blocals\b)\s*'
+      # - begin: '\b(terraform|locals|provider|module|variable|output|data|resource)\b'
+      #   beginCaptures:
+      #     1: { name: keyword.declaration.$1.tf }
+      #   end: '(?={)'
+      #   name: meta.block.$1.tf
+        # patterns:
+        #   - include: '#terraform-configuration'
+
+  block-punctuation:
+    patterns:
+      - match: '{'
+        name: punctuation.section.block.begin.tf
+      - match: '}'
+        name: punctuation.section.block.end.tf
+      - comment: identifier = ...
+        match: '(?<=[a-z0-9\s])(?==[^$=><!~])(=)'
+        name: keyword.operator.assignment.tf
+
+# --- Terraform configuration block
+  terraform-configuration:
+    patterns:
+      - match: '(?<=terraform).*(?!{)'
+      - include: '#strong'
+        # patterns:
+        #   - include: '#block-punctuation'
+
+# --- Comment
+  comment:
+    patterns:
+      - include: '#comment-line'
+      - include: '#comment-block'
+
+  comment-line:
+    patterns:
+
+      - name: comment.line.number-sign.tf
+        match: '(#).*(?=$)'
+        captures:
+        1: { name: punctuation.definition.comment.tf }
+
+      - name: comment.line.double-slash.tf
+        match: '(//).*(?=$)'
+        captures:
+          1: { name: punctuation.definition.comment.tf }
+
+      - name: comment.block.inline.tf
+        captures:
+          1: { name: punctuation.definition.comment.begin.tf }
+          2: { name: punctuation.definition.comment.end.tf }
+        match: '(/\*).*(\*/)'
+
+  comment-block:
+    patterns:
+
+      - name: comment.block.tf
+        begin: '/\*'
+        beginCaptures:
+          0: { name: punctuation.definition.comment.begin.tf }
+        end: '\*/'
+        endCaptures:
+          0: { name: punctuation.definition.comment.end.tf }
+
+# --- Invalid
+  invalid:
+    patterns:
+      - name: invalid.illegal.tf
+        match: \S

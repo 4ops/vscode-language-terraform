@@ -13,7 +13,8 @@
       "args": [
         "${workspaceFolder}/examples",
         "--extensionDevelopmentPath=${workspaceFolder}"
-      ]
+      ],
+      "preLaunchTask": "Compile"
     }
   ]
 }
