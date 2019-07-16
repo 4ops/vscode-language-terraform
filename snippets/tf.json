@@ -9,6 +9,14 @@
     ],
     "description": "terraform block"
   },
+  "required_version": {
+    "scope": "meta.terraform.tf",
+    "prefix": "required_version",
+    "body": [
+      "required_version = \"~> ${1:0.12.3}\""
+    ],
+    "description": "terraform required_version"
+  },
   "locals": {
     "scope": "source.tf",
     "prefix": "locals",

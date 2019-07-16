@@ -16,6 +16,7 @@ module "hostname" {
   prefix    = var.name
   domain    = var.domain
   random_id = var.random_id
+
 }
 
 locals  {
