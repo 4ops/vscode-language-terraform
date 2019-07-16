@@ -1,10 +1,5 @@
-     terraform  {
-       required_version = "~> 0.12.1"
-  {    }
-     }
-
-}
-  required_version = "~> 0.12.1"
+terraform {
+  version = "~> 0.12.1"
 
   required_providers {
     digitalocean = "~> 1.4"
@@ -15,22 +10,19 @@
   }
 }
 
-/* comment */
-    module "hostname" {
-      module= "hostname"
+module "hostname" {
   source    = "4ops/hostname-generator/template"
   version   = "1.0.0"
   prefix    = var.name
   domain    = var.domain
   random_id = var.random_id
-  servers   = var.servers
 }
 
-locals/**/g/**/  {
+locals  {
   {
   all_hosts = ["0.0.0.0/0", "::/0"]
   all_ports = "1-65535"
-{}
+
   bitcoin_rpc_password = var.bitcoin_rpc_password != "" ? var.bitcoin_rpc_password : join("", random_string.bitcoin_rpc_password[*].result)
   bitcoin_extra_args   = var.bitcoin_network == "testnet" ? var.bitcoin_testnet_extra_args : var.bitcoin_mainnet_extra_args
 
@@ -44,18 +36,6 @@ locals/**/g/**/  {
   ecdsa_curve = "P521"
 }
 
-resource /*asd*/ "random_string" /**jjj*/ "bitcoin_rpc_password" {
-  count = var.servers > 0 ? 1 : 0
-
-  length  = 32
-  special = false
-}
-/*
-
-
-
-jjjj
-*/
    resource "digitalocean_firewall" "network_policy" {
   count = var.servers > 0 ? 1 : 0
 

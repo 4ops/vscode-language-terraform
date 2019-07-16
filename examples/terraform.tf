@@ -12,31 +12,34 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "mybucket"
-    key    = "path/to/my/key"
-    region = "us-east-1"
+    bucket  = "mybucket"
+    key     = "path/to/my/key"
+    region  = "us-east-1"
+    enabled = true
+    options = null
+    depth   = 42.55
   }
 }
 
 # --- Test strings
 
-  terraform}{}                   # not valid
-  terraform/**/{}                # valid
-  terraforma/**/{}               # not valid
+  terraform terraform }{}        # not valid
+  terraform terraform {{}}       # not valid
+  terraform/*  */{}              # not valid
+  terraform-{}                   # not valid
+  terraforma {}                  # not valid
   /**/terraform{}                # valid
 terraform{}      /** asd*/       # valid
 q terraform{}                    # not valid
  terraform  ss/*sdf*/ gg {  }    # not valid
  terraform         {   /*sdf*/   # valid
-
                               }  # valid
-
             terraform        {   # valid
  version""           /** sdf*/   # not valid
     version="/** sdf*/"          # not valid
     version=""                   # not valid
-  version=    "111"        #     # valid
-   version="1.11"                # valid
+  version=    ""           #     # valid
+   version="==1.11"              # valid
    version   =">=1.11.11-rc0"    # valid
      version="  \"   $asd   "    # not valid
 
@@ -45,7 +48,7 @@ version= ()    ttt " >= 0.12.0 " # not valid
     version= >=0.12.0"       //  # not valid
   version== ">>6.6.6"            # not valid
 fversion            =">=0.12.0"  # not valid
- fff version         =">=0.12.0" # not valid + valid
+ fff version         =">=0.12.0" # not valid
   required_version  =">=0.12.0"  # valid
      required_version ="=0.12.0" # valid
      required_version=="=0.12.0" # not valid
@@ -65,3 +68,10 @@ fversion            =">=0.12.0"  # not valid
     aws ">= aws"                 # not valid
       }         /**/             # valid
     }                            # valid
+terraform {                      # valid
+  backend "3s" {}                # not valid
+  backend "s-" {}                # valid
+  backend "s3-" {}               # not valid
+  backend "s-3" {}               # valid
+  backend "3" {}                 # not valid
+}                                # valid

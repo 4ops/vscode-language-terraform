@@ -13,7 +13,7 @@ output "fqdn" {
 
 output "name" {
   value = data.template_file.name[*].rendered
-  description = <<<-DOC
+  description = <<-DOC
     blah blah blah
     blah lasjdkaslkdjalksjdlkjaskd
     lasjdkaslkdjalksjdlkjaskd
