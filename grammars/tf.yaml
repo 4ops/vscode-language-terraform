@@ -244,6 +244,8 @@ repository:
     - include: '#punctuation-accessor'
     - include: '#keyword-ternary'
     - include: '#keyword-comparison'
+    - include: '#keyword-conditional'
+    - include: '#keyword-loop'
     - include: '#braces-round'
     - include: '#braces-square'
     - include: '#strings'
@@ -376,6 +378,14 @@ repository:
     match: '~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]'
     name: keyword.operator.comparison.tf
 
+  keyword-conditional:
+    match: '\b(if|else|endif)\b'
+    name: keyword.control.conditional.tf
+
+  keyword-loop:
+    match: '\b(for|in|endfor)\b'
+    name: keyword.control.loop.tf
+
   braces-round:
     match: '\(|\)'
     name: meta.brace.round.tf
@@ -411,6 +421,17 @@ repository:
     patterns:
     - include: '#definition-right'
 
+  string-templates:
+    begin: '%{'
+    beginCaptures:
+      0: { name: punctuation.definition.template-expression.begin.tf }
+    end: '}'
+    endCaptures:
+      0: { name: punctuation.definition.template-expression.end.tf }
+    name: meta.template.expression.tf meta.embedded.line.tf
+    patterns:
+    - include: '#definition-right'
+
   strings:
     begin: '"'
     beginCaptures:
@@ -423,6 +444,8 @@ repository:
       - include: '#escape-char'
       - match: '\$\${'
       - include: '#string-interpolation'
+      - match: '%%{'
+      - include: '#string-templates'
 
   heredoc:
     begin: '<<[\-]?(\w+)'
@@ -435,6 +458,8 @@ repository:
     patterns:
       - match: '\$\${'
       - include: '#string-interpolation'
+      - match: '%%{'
+      - include: '#string-templates'
 
   version:
     match: '\b(version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
