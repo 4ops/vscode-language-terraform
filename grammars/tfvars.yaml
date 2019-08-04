@@ -1,0 +1,127 @@
+name: Terraform Variables
+scopeName: source.tfvars
+fileTypes: [tfvars]
+uuid: 4cffd0ae-dd9d-4fb7-8433-810b00092ab5
+
+patterns:
+- include: '#comments'
+- match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+  captures:
+    1: { name: entity.name.tfvars }
+    2: { name: keyword.operator.assignment.tfvars }
+- include: '#constants'
+- include: '#strings'
+- include: '#heredoc'
+- include: '#punctuation'
+- match: '\S'
+  name: invalid.illegal.tfvars
+
+repository:
+  comments:
+    patterns:
+    - include: '#comment-line-number-sign'
+    - include: '#comment-line-double-slash'
+    - include: '#comment-block'
+
+  comment-line-number-sign:
+    name: comment.line.number-sign.tfvars
+    begin: '#'
+    beginCaptures:
+      0: { name: punctuation.definition.comment.tfvars }
+    end: '$'
+
+  comment-line-double-slash:
+    name: comment.line.double-slash.tfvars
+    begin: '//'
+    beginCaptures:
+      0: { name: punctuation.definition.comment.tfvars }
+    end: '$'
+
+  comment-block:
+    name: comment.block.tfvars
+    begin: '/\*'
+    beginCaptures:
+      0: { name: punctuation.definition.comment.begin.tfvars }
+    end: '\*/'
+    endCaptures:
+      0: { name: punctuation.definition.comment.end.tfvars }
+
+  constants:
+    patterns:
+    - include: '#constants-decimal'
+    - include: '#constants-boolean'
+    - include: '#constants-language'
+
+  constants-decimal:
+    match: '\b\d+(\.)?(\d+)?'
+    name: constant.numeric.decimal.tfvars
+    captures:
+      1: { name: meta.delimiter.decimal.period.tfvars }
+
+  constants-boolean:
+    match: '\b(true|false)\b'
+    name: constant.language.boolean.$1.tfvars
+
+  constants-language:
+    match: '\b(null)\b'
+    name: constant.language.$1.tfvars
+
+  strings:
+    begin: '"'
+    beginCaptures:
+      0: { name: punctuation.definition.string.begin.tfvars }
+    end: '"'
+    endCaptures:
+      0: { name: punctuation.definition.string.end.tfvars }
+    name: string.quoted.double.tfvars
+    patterns:
+      - include: '#escape-char'
+
+  heredoc:
+    begin: '<<[\-]?(\w+)'
+    beginCaptures:
+      1: { name: punctuation.definition.string.template.begin.$1.tfvars }
+    end: '\1'
+    endCaptures:
+      0: { name: punctuation.definition.string.template.end.tfvars }
+    name: string.unquoted.here-doc.tfvars
+
+  escape-char:
+    match: '\\\"'
+    name: constant.character.escape.tfvars
+
+  punctuation:
+    patterns:
+    - include: '#punctuation-comma'
+    - include: '#braces-round'
+    - include: '#braces-square'
+    - include: '#brackets'
+
+  punctuation-comma:
+    match: ','
+    name: punctuation.separator.comma.tfvars
+
+  braces-round:
+    begin: '\('
+    end: '\)'
+    name: meta.brace.round.tfvars
+    patterns:
+    - include: '$self'
+
+  braces-square:
+    begin: '\['
+    end: '\]'
+    name: meta.brace.square.tfvars
+    patterns:
+    - include: '$self'
+
+  brackets:
+    begin: '{'
+    beginCaptures:
+      0: { name: punctuation.definition.block.begin.tf }
+    end: '}'
+    endCaptures:
+      0: { name: punctuation.definition.block.end.tf }
+    name: meta.block.tfvars
+    patterns:
+    - include: '$self'

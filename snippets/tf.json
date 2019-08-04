@@ -4,7 +4,7 @@
     "prefix": "terraform",
     "body": [
       "terraform {",
-      "  required_version = \"~> ${1:0.12.3}\"",
+      "  required_version = \"~> ${1:0.12.6}\"",
       "}"
     ],
     "description": "terraform block"
@@ -13,7 +13,7 @@
     "scope": "meta.terraform.tf",
     "prefix": "required_version",
     "body": [
-      "required_version = \"~> ${1:0.12.3}\""
+      "required_version = \"~> ${1:0.12.6}\""
     ],
     "description": "terraform required_version"
   },

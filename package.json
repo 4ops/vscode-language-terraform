@@ -43,6 +43,22 @@
           ".tf"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "tfvars",
+        "aliases": [
+          "Terraform Variables"
+        ],
+        "extensions": [
+          ".tfvars"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "json",
+        "extensions": [
+          ".tfstate"
+        ]
       }
     ],
     "grammars": [
@@ -50,6 +66,11 @@
         "language": "tf",
         "scopeName": "source.tf",
         "path": "./grammars/tf.json"
+      },
+      {
+        "language": "tfvars",
+        "scopeName": "source.tfvars",
+        "path": "./grammars/tfvars.json"
       }
     ],
     "snippets": [
