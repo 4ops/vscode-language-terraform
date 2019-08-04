@@ -142,11 +142,16 @@ patterns:
     0: { name: punctuation.declaration.block.end.tf }
   patterns:
   - include: '#comments'
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+  - match: '\b(type|default|description)(?:\s+)?(=)(?:\s+)?'
     captures:
-      1: { name: support.variable.attribute.tf }
+      1: { name: meta.keyword.$1.tf }
       2: { name: keyword.operator.assignment.tf }
+  - match: '\b(string|number|bool|list|map|set|object|touple)\b'
+    captures:
+      1: { name: meta.keyword.$1.tf }
   - include: '#definition-right'
+  - match: '\S'
+    name: invalid.illegal.keyword.variable.tf
 
 - name: 'meta.output.tf'
   begin: '\b(output)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
@@ -162,7 +167,7 @@ patterns:
     0: { name: punctuation.declaration.block.end.tf }
   patterns:
   - include: '#comments'
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+  - match: '\b(name|value|description|sensitive|depends_on)(?:\s+)?(=)(?:\s+)?'
     captures:
       1: { name: support.output.attribute.tf }
       2: { name: keyword.operator.assignment.tf }

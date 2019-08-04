@@ -17,6 +17,7 @@ variable     "name" {
 
 variable "servers" {
   type = map
+  asd = qwe
 
   default = {
     asd = "123",
