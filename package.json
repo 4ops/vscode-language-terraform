@@ -2,7 +2,7 @@
   "name": "terraform",
   "displayName": "Terraform",
   "description": "Terraform configuration language support",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "icon": "icon.png",
   "keywords": [
     "terraform",
