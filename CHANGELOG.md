@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.2
+
+- Add support for variable files: `.tfvars`
+- Declare `.tfstate` files as JSON
+
 ## 0.1.1
 
 - Add support for template expressions: `%{...}`
