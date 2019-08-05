@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.3
+
+- Allow identifiers without quotes in top-level blocks
+
 ## 0.1.2
 
 - Add support for variable files: `.tfvars`

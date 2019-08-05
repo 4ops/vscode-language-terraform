@@ -15,18 +15,22 @@ variable     "name" {
   DESCRIPTION
 }
 
-variable "servers" {
+variable some_variable {
   type = map
-  asd = qwe
 
   default = {
-    asd = "123",
-    zxc = 1
+    foo = "bar",
+    bar = 1,
+    one = true,
   }
 
   description = <<-DESCRIPTION
-    Count of servers to create.
+    Variable
+    description
+    with heredoc...
   DESCRIPTION
+
+  invalid_word = "value"
 }
 
 variable "random_id" {

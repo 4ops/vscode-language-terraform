@@ -10,6 +10,19 @@ terraform {
   }
 }
 
+resource "aws_security_group" "example" {
+  name = "example" # can use expressions here
+
+  dynamic "ingress" {
+    for_each = var.service_ports
+    content {
+      from_port = ingress.value
+      to_port   = ingress.value
+      protocol  = "tcp"
+    }
+  }
+}
+
 module "hostname" {
   source    = "4ops/hostname-generator/template"
   version   = "1.0.0"
@@ -20,21 +33,18 @@ module "hostname" {
 }
 
 locals  {
-  {
   all_hosts = ["0.0.0.0/0", "::/0"]
   all_ports = "1-65535"
+  password  = var.password != "" ? var.password : random_string.password.result
+  args      = join("\n", split(":", module.foo.output_list))
+  service   = "${ var.name }-service"
+  bar       = true
 
-  bitcoin_rpc_password = var.bitcoin_rpc_password != "" ? var.bitcoin_rpc_password : join("", random_string.bitcoin_rpc_password[*].result)
-  bitcoin_extra_args   = var.bitcoin_network == "testnet" ? var.bitcoin_testnet_extra_args : var.bitcoin_mainnet_extra_args
-
-  service_dir = "/srv/${var.name}"
-}
-
-      resource aa "tls_priv{ate_key" "provisioner" {
-  count = var.servers > 0 ? 1 : 0    }
-
-  algorithm   = "ECDSA"
-  ecdsa_curve = "P521"
+  text      = <<-EOF
+    %{ if foo }
+    Foo is true
+    %{ endif }
+  EOF
 }
 
    resource "digitalocean_firewall" "network_policy" {

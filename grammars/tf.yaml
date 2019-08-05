@@ -87,7 +87,7 @@ patterns:
   - include: '#definition-right'
 
 - name: 'meta.module.tf'
-  begin: '\b(module)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
+  begin: '\b(module)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
   beginCaptures:
     1: { name: keyword.declaration.$1.tf }
     2: { name: invalid.illegal.keyword.$1.tf }
@@ -108,7 +108,7 @@ patterns:
   - include: '#definition-right'
 
 - name: 'meta.provider.tf'
-  begin: '\b(provider)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
+  begin: '\b(provider)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
   beginCaptures:
     1: { name: keyword.declaration.$1.tf }
     2: { name: invalid.illegal.keyword.$1.tf }
@@ -129,7 +129,7 @@ patterns:
   - include: '#definition-right'
 
 - name: 'meta.variable.tf'
-  begin: '\b(variable)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
+  begin: '\b(variable)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
   beginCaptures:
     1: { name: keyword.declaration.$1.tf }
     2: { name: invalid.illegal.keyword.$1.tf }
@@ -154,7 +154,7 @@ patterns:
     name: invalid.illegal.keyword.variable.tf
 
 - name: 'meta.output.tf'
-  begin: '\b(output)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
+  begin: '\b(output)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
   beginCaptures:
     1: { name: keyword.declaration.$1.tf }
     2: { name: invalid.illegal.keyword.$1.tf }
@@ -174,7 +174,7 @@ patterns:
   - include: '#definition-right'
 
 - name: 'meta.data.tf'
-  begin: '\b(data)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
+  begin: '\b(data)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
   beginCaptures:
     1: { name: keyword.declaration.$1.tf }
     2: { name: invalid.illegal.keyword.$1.tf }
@@ -194,10 +194,13 @@ patterns:
     captures:
       1: { name: support.data.attribute.tf }
       2: { name: keyword.operator.assignment.tf }
+  # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+  #   captures:
+  #     1: { name: keyword.control.loop.tf }
   - include: '#definition-right'
 
 - name: 'meta.resource.tf'
-  begin: '\b(resource)([\w\-\"$])?(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?(")([^\"\n]+)?(")(?:\s+)?({)'
+  begin: '\b(resource)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
   beginCaptures:
     1: { name: keyword.declaration.$1.tf }
     2: { name: invalid.illegal.keyword.$1.tf }
@@ -217,6 +220,9 @@ patterns:
     captures:
       1: { name: support.resource.attribute.tf }
       2: { name: keyword.operator.assignment.tf }
+  # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+  #   captures:
+  #     1: { name: keyword.control.loop.tf }
   - include: '#definition-right'
 
 - include: '#invalid'
