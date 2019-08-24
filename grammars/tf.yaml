@@ -328,7 +328,7 @@ repository:
     name: support.function.builtin.numeric.tf
 
   support-function-string:
-    match: '(?<!\.)\b(chomp|formatlist|format|indent|join|lower|replace|split|strrev|substr|title|trimspace|upper)\b(?=\()'
+    match: '(?<!\.)\b(chomp|formatlist|format|indent|join|lower|regexall|regex|replace|split|strrev|substr|title|trimspace|upper)\b(?=\()'
     name: support.function.builtin.string.tf
 
   support-function-collection:

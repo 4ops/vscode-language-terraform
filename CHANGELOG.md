@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.4
+
+- Highlight new Terraform 0.12.7 functions: `regex` and `regexall`
+
 ## 0.1.3
 
 - Allow identifiers without quotes in top-level blocks
