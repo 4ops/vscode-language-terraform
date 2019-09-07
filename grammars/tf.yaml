@@ -341,7 +341,7 @@ repository:
 
   support-function-filesystem:
     name: support.function.builtin.filesystem.tf
-    match: '(?<!\.)\b(abspath|dirname|pathexpand|basename|fileexists|filebase64|templatefile|file)\b(?=\()'
+    match: '(?<!\.)\b(abspath|dirname|pathexpand|basename|fileexists|filebase64|fileset|templatefile|file)\b(?=\()'
 
   support-function-datetime:
     name: support.function.builtin.datetime.tf

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.5
+
+- Highlight new Terraform 0.12.8 function: `fileset`
+
 ## 0.1.4
 
 - Highlight new Terraform 0.12.7 functions: `regex` and `regexall`
