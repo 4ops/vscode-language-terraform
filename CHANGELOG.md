@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.6
+
+- Highlight new Terraform 0.12.10 functions: `parseint` and `cidrsubnets`
+
 ## 0.1.5
 
 - Highlight new Terraform 0.12.8 function: `fileset`

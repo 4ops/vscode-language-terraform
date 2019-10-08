@@ -4,264 +4,296 @@ fileTypes: [tf]
 uuid: 20a13a67-f65e-4e41-ae19-f18395d3312e
 
 patterns:
-- include: '#comments'
+  - include: "#comments"
 
-- name: 'meta.terraform.tf'
-  begin: '\b(terraform)([\w\-\"$])?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - include: '#version'
-  - match: '\b(required_version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
-    name: meta.terraform.required_version.tf
-    captures:
-      # 1: { name: storage.modifier.required_version.tf }
-      2: { name: keyword.operator.assignment.tf }
-      3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-      4: { name: string.quoted.double.tf }
-      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-  - name: 'meta.terraform.required_providers.tf'
-    begin: '\b(required_providers)([\w\-\"$])?(?:\s+)?({)'
+  - name: "meta.terraform.tf"
+    begin: '\b(terraform)([\w\-\"$])?(?:\s+)?({)'
     beginCaptures:
-      # 1: { name: keyword.control.$1.tf }
+      1: { name: keyword.declaration.$1.tf }
       2: { name: invalid.illegal.keyword.$1.tf }
-      3: { name: punctuation.definition.block.begin.tf }
-    end: '}'
+      3: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
     endCaptures:
-      0: { name: punctuation.definition.block.end.tf }
+      0: { name: punctuation.declaration.block.end.tf }
     patterns:
-      - include: '#comments'
-      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b(required_version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+        name: meta.terraform.required_version.tf
         captures:
-          1: { name: entity.name.provider.tf }
+          # 1: { name: storage.modifier.required_version.tf }
           2: { name: keyword.operator.assignment.tf }
-          3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+          3:
+            {
+              name: string.quoted.double.tf punctuation.definition.string.begin.tf,
+            }
           4: { name: string.quoted.double.tf }
-          5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-  - name: 'meta.terraform.backend.tf'
-    begin: '\b(backend)(?:\s+)?(")([^$"]+)?(")(?:\s+)?({)'
-    beginCaptures:
-      # 1: { name: keyword.control.$1.tf }
-      2: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-      3:
-        name: string.quoted.double.tf
+          5:
+            {
+              name: string.quoted.double.tf punctuation.definition.string.end.tf,
+            }
+      - name: "meta.terraform.required_providers.tf"
+        begin: '\b(required_providers)([\w\-\"$])?(?:\s+)?({)'
+        beginCaptures:
+          # 1: { name: keyword.control.$1.tf }
+          2: { name: invalid.illegal.keyword.$1.tf }
+          3: { name: punctuation.definition.block.begin.tf }
+        end: "}"
+        endCaptures:
+          0: { name: punctuation.definition.block.end.tf }
         patterns:
-          - match: '(?<=")([^a-z]+)'
-            name: invalid.illegal.tf
-      4: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-      5: { name: punctuation.definition.block.begin.tf }
-    end: '}'
+          - include: "#comments"
+          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+            captures:
+              1: { name: entity.name.provider.tf }
+              2: { name: keyword.operator.assignment.tf }
+              3:
+                {
+                  name: string.quoted.double.tf punctuation.definition.string.begin.tf,
+                }
+              4: { name: string.quoted.double.tf }
+              5:
+                {
+                  name: string.quoted.double.tf punctuation.definition.string.end.tf,
+                }
+      - name: "meta.terraform.backend.tf"
+        begin: '\b(backend)(?:\s+)?(")([^$"]+)?(")(?:\s+)?({)'
+        beginCaptures:
+          # 1: { name: keyword.control.$1.tf }
+          2:
+            {
+              name: string.quoted.double.tf punctuation.definition.string.begin.tf,
+            }
+          3:
+            name: string.quoted.double.tf
+            patterns:
+              - match: '(?<=")([^a-z]+)'
+                name: invalid.illegal.tf
+          4:
+            {
+              name: string.quoted.double.tf punctuation.definition.string.end.tf,
+            }
+          5: { name: punctuation.definition.block.begin.tf }
+        end: "}"
+        endCaptures:
+          0: { name: punctuation.definition.block.end.tf }
+        patterns:
+          - include: "#comments"
+          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+            captures:
+              1: { name: support.backend.attribute.tf }
+              2: { name: keyword.operator.assignment.tf }
+              3:
+                {
+                  name: string.quoted.double.tf punctuation.definition.string.begin.tf,
+                }
+              4: { name: string.quoted.double.tf }
+              5:
+                {
+                  name: string.quoted.double.tf punctuation.definition.string.end.tf,
+                }
+          - include: "#definition-right"
+
+  - name: "meta.locals.tf"
+    begin: '\b(locals)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
     endCaptures:
-      0: { name: punctuation.definition.block.end.tf }
+      0: { name: punctuation.declaration.block.end.tf }
     patterns:
-      - include: '#comments'
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?!=|>|<)'
+        captures:
+          1: { name: variable.other.readwrite.tf }
+          2: { name: keyword.operator.assignment.tf }
+      - include: "#definition-right"
+
+  - name: "meta.module.tf"
+    begin: '\b(module)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      4: { name: string.quoted.double.tf entity.name.module.tf }
+      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      6: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
       - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
         captures:
-          1: { name: support.backend.attribute.tf }
+          1: { name: support.module.attribute.tf }
           2: { name: keyword.operator.assignment.tf }
-          3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-          4: { name: string.quoted.double.tf }
-          5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-      - include: '#definition-right'
+      - include: "#definition-right"
 
-- name: 'meta.locals.tf'
-  begin: '\b(locals)([\w\-\"$])?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?!=|>|<)'
-    captures:
-      1: { name: variable.other.readwrite.tf }
-      2: { name: keyword.operator.assignment.tf }
-  - include: '#definition-right'
+  - name: "meta.provider.tf"
+    begin: '\b(provider)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      4: { name: string.quoted.double.tf entity.name.provider.tf }
+      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      6: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.provider.attribute.tf }
+          2: { name: keyword.operator.assignment.tf }
+      - include: "#definition-right"
 
-- name: 'meta.module.tf'
-  begin: '\b(module)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    4: { name: string.quoted.double.tf entity.name.module.tf }
-    5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    6: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - include: '#version'
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
-    captures:
-      1: { name: support.module.attribute.tf }
-      2: { name: keyword.operator.assignment.tf }
-  - include: '#definition-right'
+  - name: "meta.variable.tf"
+    begin: '\b(variable)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      4: { name: string.quoted.double.tf entity.name.$1.tf }
+      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      6: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - include: "#comments"
+      - match: '\b(type|default|description)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: meta.keyword.$1.tf }
+          2: { name: keyword.operator.assignment.tf }
+      - match: '\b(string|number|bool|list|map|set|object|touple)\b'
+        captures:
+          1: { name: meta.keyword.$1.tf }
+      - include: "#definition-right"
+      - match: '\S'
+        name: invalid.illegal.keyword.variable.tf
 
-- name: 'meta.provider.tf'
-  begin: '\b(provider)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    4: { name: string.quoted.double.tf entity.name.provider.tf }
-    5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    6: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - include: '#version'
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
-    captures:
-      1: { name: support.provider.attribute.tf }
-      2: { name: keyword.operator.assignment.tf }
-  - include: '#definition-right'
+  - name: "meta.output.tf"
+    begin: '\b(output)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      4: { name: string.quoted.double.tf entity.name.$1.tf }
+      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      6: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - include: "#comments"
+      - match: '\b(name|value|description|sensitive|depends_on)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.output.attribute.tf }
+          2: { name: keyword.operator.assignment.tf }
+      - include: "#definition-right"
 
-- name: 'meta.variable.tf'
-  begin: '\b(variable)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    4: { name: string.quoted.double.tf entity.name.$1.tf }
-    5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    6: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - match: '\b(type|default|description)(?:\s+)?(=)(?:\s+)?'
-    captures:
-      1: { name: meta.keyword.$1.tf }
-      2: { name: keyword.operator.assignment.tf }
-  - match: '\b(string|number|bool|list|map|set|object|touple)\b'
-    captures:
-      1: { name: meta.keyword.$1.tf }
-  - include: '#definition-right'
-  - match: '\S'
-    name: invalid.illegal.keyword.variable.tf
+  - name: "meta.data.tf"
+    begin: '\b(data)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      4: { name: string.quoted.double.tf entity.type.$1.tf }
+      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      6:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      7: { name: string.quoted.double.tf entity.name.$1.tf }
+      8: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      9: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - include: "#comments"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.data.attribute.tf }
+          2: { name: keyword.operator.assignment.tf }
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.tf }
+      - include: "#definition-right"
 
-- name: 'meta.output.tf'
-  begin: '\b(output)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    4: { name: string.quoted.double.tf entity.name.$1.tf }
-    5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    6: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - match: '\b(name|value|description|sensitive|depends_on)(?:\s+)?(=)(?:\s+)?'
-    captures:
-      1: { name: support.output.attribute.tf }
-      2: { name: keyword.operator.assignment.tf }
-  - include: '#definition-right'
+  - name: "meta.resource.tf"
+    begin: '\b(resource)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      4: { name: string.quoted.double.tf entity.type.$1.tf }
+      5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      6:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      7: { name: string.quoted.double.tf entity.name.$1.tf }
+      8: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
+      9: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - include: "#comments"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.resource.attribute.tf }
+          2: { name: keyword.operator.assignment.tf }
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.tf }
+      - include: "#definition-right"
 
-- name: 'meta.data.tf'
-  begin: '\b(data)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    4: { name: string.quoted.double.tf entity.type.$1.tf }
-    5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    6: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    7: { name: string.quoted.double.tf entity.name.$1.tf }
-    8: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    9: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
-    captures:
-      1: { name: support.data.attribute.tf }
-      2: { name: keyword.operator.assignment.tf }
-  # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
-  #   captures:
-  #     1: { name: keyword.control.loop.tf }
-  - include: '#definition-right'
-
-- name: 'meta.resource.tf'
-  begin: '\b(resource)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-  beginCaptures:
-    1: { name: keyword.declaration.$1.tf }
-    2: { name: invalid.illegal.keyword.$1.tf }
-    3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    4: { name: string.quoted.double.tf entity.type.$1.tf }
-    5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    6: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
-    7: { name: string.quoted.double.tf entity.name.$1.tf }
-    8: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
-    9: { name: punctuation.declaration.block.begin.tf }
-  end: '}'
-  endCaptures:
-    0: { name: punctuation.declaration.block.end.tf }
-  patterns:
-  - include: '#comments'
-  - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
-    captures:
-      1: { name: support.resource.attribute.tf }
-      2: { name: keyword.operator.assignment.tf }
-  # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
-  #   captures:
-  #     1: { name: keyword.control.loop.tf }
-  - include: '#definition-right'
-
-- include: '#invalid'
+  - include: "#invalid"
 
 repository:
   definition-right:
     patterns:
-    - include: '#comments'
-    - include: '#support-path'
-    - include: '#support-self'
-    - include: '#support-count-index'
-    - include: '#support-variable'
-    - include: '#support-local'
-    - include: '#support-module'
-    - include: '#support-terraform'
-    - include: '#support-data'
-    - include: '#support-function-numeric'
-    - include: '#support-function-string'
-    - include: '#support-function-collection'
-    - include: '#support-function-encoding'
-    - include: '#support-function-filesystem'
-    - include: '#support-function-datetime'
-    - include: '#support-function-crypto'
-    - include: '#support-function-network'
-    - include: '#support-function-conversion'
-    - include: '#constants-decimal'
-    - include: '#constants-boolean'
-    - include: '#constants-language'
-    - include: '#punctuation-comma'
-    - include: '#punctuation-accessor'
-    - include: '#keyword-ternary'
-    - include: '#keyword-comparison'
-    - include: '#keyword-conditional'
-    - include: '#keyword-loop'
-    - include: '#braces-round'
-    - include: '#braces-square'
-    - include: '#strings'
-    - include: '#heredoc'
-    - include: '#blocks'
+      - include: "#comments"
+      - include: "#support-path"
+      - include: "#support-self"
+      - include: "#support-count-index"
+      - include: "#support-variable"
+      - include: "#support-local"
+      - include: "#support-module"
+      - include: "#support-terraform"
+      - include: "#support-data"
+      - include: "#support-function-numeric"
+      - include: "#support-function-string"
+      - include: "#support-function-collection"
+      - include: "#support-function-encoding"
+      - include: "#support-function-filesystem"
+      - include: "#support-function-datetime"
+      - include: "#support-function-crypto"
+      - include: "#support-function-network"
+      - include: "#support-function-conversion"
+      - include: "#constants-decimal"
+      - include: "#constants-boolean"
+      - include: "#constants-language"
+      - include: "#punctuation-comma"
+      - include: "#punctuation-accessor"
+      - include: "#keyword-ternary"
+      - include: "#keyword-comparison"
+      - include: "#keyword-conditional"
+      - include: "#keyword-loop"
+      - include: "#braces-round"
+      - include: "#braces-square"
+      - include: "#strings"
+      - include: "#heredoc"
+      - include: "#blocks"
 
   support-path:
     match: '(?<!\.)\b(path)(\.)(\w+)\b'
@@ -324,7 +356,7 @@ repository:
       5: { name: support.data.$3.attribute.tf }
 
   support-function-numeric:
-    match: '(?<!\.)\b(abs|ceil|floor|log|max|min|pow|signum)\b(?=\()'
+    match: '(?<!\.)\b(abs|ceil|floor|log|max|min|pow|signum|parseint)\b(?=\()'
     name: support.function.builtin.numeric.tf
 
   support-function-string:
@@ -353,7 +385,7 @@ repository:
 
   support-function-network:
     name: support.function.builtin.network.tf
-    match: '(?<!\.)\b(cidrhost|cidrnetmask|cidrsubnet)\b(?=\()'
+    match: '(?<!\.)\b(cidrhost|cidrnetmask|cidrsubnets|cidrsubnet)\b(?=\()'
 
   support-function-conversion:
     name: support.function.builtin.conversion.tf
@@ -374,7 +406,7 @@ repository:
     name: constant.language.$1.js
 
   punctuation-comma:
-    match: ','
+    match: ","
     name: punctuation.separator.comma.js
 
   punctuation-accessor:
@@ -386,7 +418,7 @@ repository:
     name: keyword.operator.ternary.tf
 
   keyword-comparison:
-    match: '~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]'
+    match: "~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]"
     name: keyword.operator.comparison.tf
 
   keyword-conditional:
@@ -406,16 +438,16 @@ repository:
     name: meta.brace.square.tf
 
   blocks:
-    begin: '{'
+    begin: "{"
     beginCaptures:
       0: { name: punctuation.definition.block.begin.tf }
-    end: '}'
+    end: "}"
     endCaptures:
       0: { name: punctuation.definition.block.end.tf }
     name: meta.block.tf
     patterns:
-      - include: '#definition-right'
-      - include: '#blocks'
+      - include: "#definition-right"
+      - include: "#blocks"
 
   escape-char:
     match: '\\\"'
@@ -425,23 +457,23 @@ repository:
     begin: '\${'
     beginCaptures:
       0: { name: punctuation.definition.template-expression.begin.tf }
-    end: '}'
+    end: "}"
     endCaptures:
       0: { name: punctuation.definition.template-expression.end.tf }
     name: meta.template.expression.tf meta.embedded.line.tf
     patterns:
-    - include: '#definition-right'
+      - include: "#definition-right"
 
   string-templates:
-    begin: '%{'
+    begin: "%{"
     beginCaptures:
       0: { name: punctuation.definition.template-expression.begin.tf }
-    end: '}'
+    end: "}"
     endCaptures:
       0: { name: punctuation.definition.template-expression.end.tf }
     name: meta.template.expression.tf meta.embedded.line.tf
     patterns:
-    - include: '#definition-right'
+      - include: "#definition-right"
 
   strings:
     begin: '"'
@@ -452,11 +484,11 @@ repository:
       0: { name: punctuation.definition.string.template.end.tf }
     name: string.template.tf
     patterns:
-      - include: '#escape-char'
+      - include: "#escape-char"
       - match: '\$\${'
-      - include: '#string-interpolation'
-      - match: '%%{'
-      - include: '#string-templates'
+      - include: "#string-interpolation"
+      - match: "%%{"
+      - include: "#string-templates"
 
   heredoc:
     begin: '<<[\-]?(\w+)'
@@ -468,9 +500,9 @@ repository:
     name: string.unquoted.here-doc.tf
     patterns:
       - match: '\$\${'
-      - include: '#string-interpolation'
-      - match: '%%{'
-      - include: '#string-templates'
+      - include: "#string-interpolation"
+      - match: "%%{"
+      - include: "#string-templates"
 
   version:
     match: '\b(version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
@@ -478,23 +510,24 @@ repository:
     captures:
       1: { name: storage.modifier.version.tf }
       2: { name: keyword.operator.assignment.tf }
-      3: { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
+      3:
+        { name: string.quoted.double.tf punctuation.definition.string.begin.tf }
       4: { name: string.quoted.double.tf }
       5: { name: string.quoted.double.tf punctuation.definition.string.end.tf }
 
   comment-line-number-sign:
     name: comment.line.number-sign.tf
-    begin: '#'
+    begin: "#"
     beginCaptures:
       0: { name: punctuation.definition.comment.tf }
-    end: '$'
+    end: "$"
 
   comment-line-double-slash:
     name: comment.line.double-slash.tf
-    begin: '//'
+    begin: "//"
     beginCaptures:
       0: { name: punctuation.definition.comment.tf }
-    end: '$'
+    end: "$"
 
   comment-block:
     name: comment.block.tf
@@ -507,9 +540,9 @@ repository:
 
   comments:
     patterns:
-    - include: '#comment-line-number-sign'
-    - include: '#comment-line-double-slash'
-    - include: '#comment-block'
+      - include: "#comment-line-number-sign"
+      - include: "#comment-line-double-slash"
+      - include: "#comment-block"
 
   invalid:
     name: invalid.illegal.tf
