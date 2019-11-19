@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.7
+
+- Highlight new Terraform 0.12.16 functions: `trimprefix`, `trimsuffix` and `trim`
+
 ## 0.1.6
 
 - Highlight new Terraform 0.12.10 functions: `parseint` and `cidrsubnets`
