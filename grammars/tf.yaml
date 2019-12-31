@@ -173,7 +173,7 @@ patterns:
         captures:
           1: { name: meta.keyword.$1.tf }
           2: { name: keyword.operator.assignment.tf }
-      - match: '\b(string|number|bool|list|map|set|object|touple)\b'
+      - match: '\b(string|number|bool|list|map|set|object|touple|any)\b'
         captures:
           1: { name: meta.keyword.$1.tf }
       - include: "#definition-right"

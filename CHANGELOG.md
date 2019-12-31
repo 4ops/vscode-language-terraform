@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.8
+
+- Fix highlighting `any` type in `variable` block
+
 ## 0.1.7
 
 - Highlight new Terraform 0.12.16 functions: `trimprefix`, `trimsuffix` and `trim`
