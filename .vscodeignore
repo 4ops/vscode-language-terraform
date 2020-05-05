@@ -23,6 +23,9 @@ grammars/**
 snippets/**
 !snippets/*.json
 
+resources/screencasts/
+resources/screenshots/
+
 # Output
 *.log
 
