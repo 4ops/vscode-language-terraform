@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.10
+
+- Update common snippets
+- Add snippets for creating datasources and resources with providers: `archive`, `external`, `http`, `terraform`, `tls`, `local`, `null`, `template`, `random`, `time`
+
 ## 0.1.9
 
 - Rewrite all snippets
