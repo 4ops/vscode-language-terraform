@@ -7,19 +7,28 @@ This is a Visual Studio Code extension. Adds syntax support for the Terraform co
 * Syntax highlighting
 * Basic syntax validation
 * Snippets
-* No server running
+* No language server
 * No telemetry
+* No popups
 
-## Animated examples
+## Snippets
 
-![Snippets](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/snippets.gif)
+![Terraform](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/terraform.gif)
 
-![Syntax](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/syntax.gif)
+![Providers](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/providers.gif)
 
-## Screenshots
+![Snippets-1](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/snippets-1.gif)
 
-![Locals](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/locals.png)
+![Snippets-2](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/snippets-2.gif)
 
-![Terraform](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/terraform.png)
+## Syntax highlighting
 
-![Variable](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/variable.png)
+### Dark+
+
+![Syntax-1](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/dark-syntax-1.png)
+![Syntax-2](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/dark-syntax-2.png)
+
+### Light+
+
+![Syntax-1](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/light-syntax-1.png)
+![Syntax-2](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/light-syntax-2.png)
