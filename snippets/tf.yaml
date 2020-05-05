@@ -7,139 +7,470 @@ Terraform:
       required_version = ">= 0.12"
     }
 
+Required providers:
+  scope: meta.terraform.tf
+  prefix: required-providers
+  description: Required providers block.
+  body: |
+    required_providers {
+      ${1|acme,akamai,alicloud,archive,arukas,auth0,avi,aviatrix,aws,azurerm,azuread,azurestack,vthunder,baiducloud,bitbucket,brightbox,clc,checkpoint,chef,cherryservers,circonus,ciscoasa,aci,cloudflare,cloudscale,cloudstack,cobbler,consul,datadog,digitalocean,dns,dnsimple,dme,docker,dome9,dyn,exoscale,external,bigip,fastly,flexibleengine,fortios,genymotion,github,gitlab,google,grafana,gridscale,hedvig,helm,heroku,hcloud,http,huaweicloud,huaweicloudstack,icinga2,ignition,incapsula,influxdb,infoblox,jdcloud,kubernetes,launchdarkly,librato,linode,local,logentries,logicmonitor,mailgun,metalcloud,mongodbatlas,mysql,ncloud,netlify,newrelic,nomad,ns1,null,nutanix,oneandone,okta,oktaasa,opennebula,openstack,opentelekomcloud,opsgenie,oci,oraclepaas,opc,ovh,packet,pagerduty,panos,postgresql,powerdns,profitbricks,pureport,rabbitmq,rancher,rancher2,random,rightscale,rundeck,runscope,scaleway,selectel,signalfx,skytap,softlayer,spotinst,stackpath,statuscake,sumologic,telefonicaopencloud,template,tencentcloud,terraform,tfe,time,tls,triton,turbot,ucloud,ultradns,vault,venafi,vmc,nsxt,vcd,vra7,vsphere,vultr,yandex|} = ">= ${2:version}"
+    }
+
+Required version:
+  scope: meta.terraform.tf
+  prefix: required-version
+  description: Required version block.
+  body: |
+    required_version = ">= 0.12"
+
+Backend configuration:
+  scope: meta.terraform.tf
+  prefix: backend
+  description: Backend configuration.
+  body: |
+    backend ${1|local,remote,artifactory,azurerm,consul,cos,etcd,etcdv3gcs,http,mantaoss,pg,s3swift,atlas|} {
+      ${2|name,address,path,prefix,endpoints,url,scheme,username,password,token|} = "${3:value}"
+    }
+
 Local values:
   scope: source.tf
   prefix: locals
   description: A set of related local values.
   body: |
     locals {
-      ${1} = ${2}
+      ${1:name} = ${2:value}
     }
 
-String variable:
+Variable:
   scope: source.tf
-  prefix: variable-string
-  description: Input variable with `string` type, `default` value and `description`.
+  prefix: variable
+  description: Input variable.
   body: |
-    variable ${1} {
-      type        = string
-      default     = ${2|"",null|}
-      description = "${3}"
-    }
-
-Numeric variable:
-  scope: source.tf
-  prefix: variable-number
-  description: Input variable with `number` type, `default` value and `description`.
-  body: |
-    variable ${1} {
-      type        = number
-      default     = ${2|-1,0,1,null|}
-      description = "${3}"
-    }
-
-Boolean variable:
-  scope: source.tf
-  prefix: variable-bool
-  description: Input variable with `bool` type, `default` value and `description`.
-  body: |
-    variable ${1} {
-      type        = bool
-      default     = ${2|true,false,null|}
-      description = "${3}"
-    }
-
-List strings variable:
-  scope: source.tf
-  prefix: variable-list-strings
-  description: Input variable with list of string, `default` value and `description`.
-  body: |
-    variable ${1} {
-      type        = list(string)
-      default     = ${2|[],null|}
-      description = "${3}"
-    }
-
-Map variable:
-  scope: source.tf
-  prefix: variable-map
-  description: Input variable with map, `default` value and `description`.
-  body: |
-    variable ${1} {
-      type        = map(any)
-      default     = ${2|{},null|}
-      description = "${3}"
+    variable ${1:name} {
+      type        = ${2|string,number,bool,map,list,list(string),tuple,object,any|}
+      default     = ${3|"",0,false,true,{},[],null|}
+      description = "${4:description}"
     }
 
 Output:
   scope: source.tf
   prefix: output
-  description: Output value with `description`.
+  description: Output value.
   body: |
-    output ${1} {
-      value       = ${2}
-      description = "${3}"
+    output ${1:name} {
+      value       = ${2|"",data.,local.,module.|}
+      sensitive   = ${3|true,false|}
+      description = "${4:description}"
+      depends_on  = [${5}]
     }
 
-Sensitive output:
-  scope: source.tf
-  prefix: output-sensitive
-  description: Output value with `description` (sensitive content).
-  body: |
-    output ${1} {
-      value       = ${2}
-      description = "${3}"
-      sensitive   = true
-    }
-
-Output value depended:
-  scope: source.tf
-  prefix: output-depends
-  description: Output value with `description` with dependencies.
-  body: |
-    output ${1} {
-      value       = ${2}
-      description = "${3}"
-      depends_on  = [
-        ${0}
-      ]
-    }
-
-Local module:
+Module from local dir:
   scope: source.tf
   prefix: module-local
   description: Child module configuration block placed in local `modules` directory.
   body: |
-    module ${1} {
-      source = "./modules/${1}"
-      ${2}   = ${0}
+    module ${1:name} {
+      source = "./modules/${1:name}"
+      ${2:param}  = ${3:value}
     }
 
-Registry module:
+Module from registry:
   scope: source.tf
   prefix: module-registry
   description: Includes child module from Terraform registry.
   body: |
-    module ${1} {
-      source  = "${2}/${1}/${3}"
-      version = "${4|1.0.0|}"
-      ${5}    = ${0}
+    module ${1:name} {
+      source  = "${2:owner}/${1:name}/${3|acme,akamai,alicloud,archive,arukas,auth0,avi,aviatrix,aws,azurerm,azuread,azurestack,vthunder,baiducloud,bitbucket,brightbox,clc,checkpoint,chef,cherryservers,circonus,ciscoasa,aci,cloudflare,cloudscale,cloudstack,cobbler,consul,datadog,digitalocean,dns,dnsimple,dme,docker,dome9,dyn,exoscale,external,bigip,fastly,flexibleengine,fortios,genymotion,github,gitlab,google,grafana,gridscale,hedvig,helm,heroku,hcloud,http,huaweicloud,huaweicloudstack,icinga2,ignition,incapsula,influxdb,infoblox,jdcloud,kubernetes,launchdarkly,librato,linode,local,logentries,logicmonitor,mailgun,metalcloud,mongodbatlas,mysql,ncloud,netlify,newrelic,nomad,ns1,null,nutanix,oneandone,okta,oktaasa,opennebula,openstack,opentelekomcloud,opsgenie,oci,oraclepaas,opc,ovh,packet,pagerduty,panos,postgresql,powerdns,profitbricks,pureport,rabbitmq,rancher,rancher2,random,rightscale,rundeck,runscope,scaleway,selectel,signalfx,skytap,softlayer,spotinst,stackpath,statuscake,sumologic,telefonicaopencloud,template,tencentcloud,terraform,tfe,time,tls,triton,turbot,ucloud,ultradns,vault,venafi,vmc,nsxt,vcd,vra7,vsphere,vultr,yandex|}"
+      version = "${4:version}"
+      ${5:param}   = ${6:value}
     }
 
-Resource:
+# --- Provider: Archive
+
+Data archive file:
   scope: source.tf
-  prefix: resource
-  description: Simple `resource` block.
+  prefix: data-archive-file
+  description: Generates an archive from content, a file, or directory of files.
   body: |
-    resource ${1} ${2} {
-      ${0}
+    data archive_file ${1:name} {
+      type        = "zip"
+      output_path = "${path.module}/files/output.zip"
+
+      source {
+        content  = ${2|"",data.,local.,module.|}
+        filename = "${3}"
+      }
     }
 
-Datasource:
+# --- Provider: External
+
+Data external:
   scope: source.tf
-  prefix: data
-  description: Simple `data` block.
+  prefix: data-external
+  description: The `external` data source allows an external program implementing a specific protocol (defined below) to act as a data source, exposing arbitrary data for use elsewhere in the Terraform configuration.
   body: |
-    data ${1} ${2} {
-      ${0}
+    data external ${1:name} {
+      program = ["${2:program}"]
+
+      query = {
+        ${3:param} = ${4:value}
+      }
+    }
+
+# --- Provider: HTTP
+
+Data http:
+  scope: source.tf
+  prefix: data-http
+  description: The `http` data source makes an HTTP GET request to the given URL and exports information about the response.
+  body: |
+    data http ${1:name} {
+      url = ${2|"https://","http://",var.,data.,local.,module.|}
+
+      request_headers = {
+        Accept = "application/json"
+      }
+    }
+
+# --- Provider: Terraform
+
+Data from remote terraform state:
+  scope: source.tf
+  prefix: data-terraform-remote-state
+  description: The terraform provider provides access to outputs from the Terraform state of shared infrastructure.
+  body: |
+    data terraform_remote_state ${1:name} {
+      backend = "${2|local,remote,artifactory,azurerm,consul,cos,etcd,etcdv3,gcs,http,manta,oss,pg,s3,swift,atlas|}"
+
+      config {
+        ${2|name,address,path,prefix,endpoints,url,scheme,username,password,token|} = "${3:value}"
+      }
+    }
+
+# --- Provider: TLS
+
+Data TLS public key:
+  scope: source.tf
+  prefix: data-tls-public-key
+  description: Use this data source to get the public key from a PEM-encoded private key for use in other resources.
+  body: |
+    data tls_public_key ${1:name} {
+      private_key_pem = ${2|"",var.,data.,local.,module.,tls_private_key.|}
+    }
+
+Resource TLS private key:
+  scope: source.tf
+  prefix: resource-tls-private-key
+  description: Generates a secure private key and encodes it as PEM. This resource is primarily intended for easily bootstrapping throwaway development environments.
+  body: |
+    resource tls_private_key ${1:name} {
+      algorithm    = ${2|ECDSA,RSA|}
+      ecdsa_curve  = "P384"
+      rsa_bits     = "4096"
+    }
+
+Resource TLS self-signed key:
+  scope: source.tf
+  prefix: resource-tls-self-signed-key
+  description: Generates a self-signed TLS certificate in PEM format, which is the typical format used to configure TLS server software.
+  body: |
+    resource tls_self_signed_cert ${1:name} {
+      key_algorithm   = ${2|ECDSA,RSA|}
+      private_key_pem = ${3|"",var.,data.,local.,module.,tls_private_key.|}
+
+      subject {
+        common_name  = "${4:CN}"
+        organization = "${5:O}"
+      }
+
+      is_ca_certificate     = ${6|false,true|}
+      validity_period_hours = 26280
+
+      allowed_uses = [
+        "key_encipherment",
+        "digital_signature",
+        "server_auth",
+      ]
+
+      dns_names    = []
+      ip_addresses = []
+      uris         = []
+    }
+
+Resource TLS locally-signed key:
+  scope: source.tf
+  prefix: resource-tls-locally-signed-key
+  description: Generates a TLS certificate using a Certificate Signing Request (CSR) and signs it with a provided certificate authority (CA) private key.
+  body: |
+    resource tls_locally_signed_cert ${1:name} {
+      cert_request_pem   = ${2|"",var.,data.,local.,module.,tls_private_key.|}
+      ca_key_algorithm   = ${3|ECDSA,RSA|}
+      ca_private_key_pem = ${4|"",var.,data.,local.,module.,tls_private_key.|}
+      ca_cert_pem        = ${5|"",var.,data.,local.,module.,tls_private_key.|}
+
+      is_ca_certificate     = ${6|false,true|}
+      validity_period_hours = 26280
+
+      allowed_uses = [
+        "key_encipherment",
+        "digital_signature",
+        "server_auth",
+      ]
+    }
+
+Resource TLS cert request:
+  scope: source.tf
+  prefix: resource-tls-cert-request
+  description: Generates a Certificate Signing Request (CSR) in PEM format, which is the typical format used to request a certificate from a certificate authority.
+  body: |
+    resource tls_cert_request ${1:name} {
+      key_algorithm   = ${2|ECDSA,RSA|}
+      private_key_pem = ${3|"",var.,data.,local.,module.,tls_private_key.|}
+      ca_cert_pem     = ${4|"",var.,data.,local.,module.,tls_private_key.|}
+
+      subject {
+        common_name  = "${5:CN}"
+        organization = "${6:O}"
+      }
+
+      dns_names    = []
+      ip_addresses = []
+      uris         = []
+    }
+
+# --- Provider: Local
+
+Data local file:
+  scope: source.tf
+  prefix: data-local-file
+  description: Datasource `local_file` reads a file from the local filesystem.
+  body: |
+    data local_file ${1:name} {
+      filename = "${path.module}/${2}"
+    }
+
+Resource local file:
+  scope: source.tf
+  prefix: resource-local-file
+  description: Generates a local file with the given content.
+  body: |
+    resource local_file ${1:name} {
+      ${2|sensitive_content,content,content_base64|} = ${3|"",var.,data.,local.,module.,tls_private_key.|}
+      filename             = "${path.module}/files/${4:outputfile}"
+      file_permission      = 0777
+      directory_permission = 0777
+    }
+
+# --- Provider: Null
+
+Data null:
+  scope: source.tf
+  prefix: data-null
+  description: The `null_data_source` data source implements the standard data source lifecycle but does not interact with any external APIs.
+  body: |
+    data null_data_source ${1:name} {
+      inputs = {
+        ${2:var} = ${3:value}
+      }
+    }
+
+Resource null:
+  scope: source.tf
+  prefix: resource-null
+  description: The `null_resource` resource implements the standard resource lifecycle but takes no further action.
+  body: |
+    resource null_resource ${1:name} {
+      triggers = {
+        ${2:trigger} = ${3:value}
+      }
+
+      provisioner "local-exec" {
+        command = "${4:command}"
+      }
+    }
+
+# --- Provider: Template
+
+Data template file:
+  scope: source.tf
+  prefix: data-template-file
+  description: The `template_file` data source renders a template from a template string, which is usually loaded from an external file.
+  body: |
+    data template_file ${1:name} {
+      template = "${path.module}/templates/${2:templatefilename}"
+
+      vars = {
+        ${3:var} = ${4:value}
+      }
+    }
+
+Data template cloudinit:
+  scope: source.tf
+  prefix: data-template-cloudinit-config
+  description: Renders a multipart MIME configuration for use with cloud-init.
+  body: |
+    data template_cloudinit_config ${1:name} {
+      gzip          = true
+      base64_encode = true
+
+      part {
+        filename     = "${2:filename}"
+        content_type = "text/cloud-config"
+        content      = ${3|"",var.,data.,local.,module.,tls_private_key.|}
+      }
+    }
+
+Resource template dir:
+  scope: source.tf
+  prefix: resource-template-dir
+  description: Renders a directory containing templates into a separate directory of corresponding rendered files.
+  body: |
+    resource template_dir ${1:name} {
+      source_dir      = ${2:sourcepath}
+      destination_dir = ${3:destinationpath}
+
+      vars = {
+        ${4:var} = ${5:value}
+      }
+    }
+
+# --- Provider: Random
+
+Resource random id:
+  scope: source.tf
+  prefix: resource-random-id
+  description: The resource `random_id` generates random numbers that are intended to be used as unique identifiers for other resources.
+  body: |
+    resource random_id ${1:name} {
+      byte_length = ${2:length}
+
+      keepers = {
+        ${3:id} = ${4:value}
+      }
+    }
+
+Resource random integer:
+  scope: source.tf
+  prefix: resource-random-integer
+  description: The resource `random_integer` generates random values from a given range, described by the min and max attributes of a given resource.
+  body: |
+    resource random_integer ${1:name} {
+      min = ${2|0,1|}
+      max = ${3:maxvalue}
+
+      keepers = {
+        ${4:id} = ${5:value}
+      }
+    }
+
+Resource random string:
+  scope: source.tf
+  prefix: resource-random-string
+  description: The resource `random_string` generates a random permutation of alphanumeric characters and optionally special characters.
+  body: |
+    resource random_string ${1:name} {
+      length  = ${2:length}
+      upper   = ${3|true,false|}
+      lower   = ${4|true,false|}
+      number  = ${5|true,false|}
+      special = ${6|true,false|}
+
+      keepers = {
+        ${7:id} = ${8:value}
+      }
+    }
+
+Resource random password:
+  scope: source.tf
+  prefix: resource-random-password
+  description: Identical to `random_string` with the exception that the result is treated as sensitive and, thus, not displayed in console output.
+  body: |
+    resource random_password ${1:name} {
+      length  = ${2:length}
+      upper   = ${3|true,false|}
+      lower   = ${4|true,false|}
+      number  = ${5|true,false|}
+      special = ${6|true,false|}
+
+      keepers = {
+        ${7:id} = ${8:value}
+      }
+    }
+
+Resource random pet:
+  scope: source.tf
+  prefix: resource-random-pet
+  description: The resource `random_pet` generates random pet names that are intended to be used as unique identifiers for other resources.
+  body: |
+    resource random_pet ${1:name} {
+      length    = ${2:length}
+      prefix    = ""
+      separator = ""
+
+      keepers = {
+        ${3:id} = ${4:value}
+      }
+    }
+
+Resource random shuffle:
+  scope: source.tf
+  prefix: resource-random-shuffle
+  description: The resource `random_shuffle` generates a random permutation of a list of strings given as an argument.
+  body: |
+    resource random_shuffle ${1:name} {
+      input = ${2|[],[""]|}
+
+      keepers = {
+        ${3:id} = ${4:value}
+      }
+    }
+
+Resource random uuid:
+  scope: source.tf
+  prefix: resource-random-uuid
+  description: The resource `random_uuid` generates random uuid string that is intended to be used as unique identifiers for other resources.
+  body: |
+    resource random_uuid ${1:name} {
+      keepers = {
+        ${2:id} = ${3:value}
+      }
+    }
+
+# --- Provider: Time
+
+Resource time offset:
+  scope: source.tf
+  prefix: resource-time-offset
+  description: Manages an offset time resource, which keeps an UTC timestamp stored in the Terraform state that is offset from a locally sourced base timestamp.
+  body: |
+    resource time_offset ${1:name} {
+      triggers = {
+        ${2:id} = ${3:value}
+      }
+
+      ${4|offset_days,offset_hours,offset_minutes,offset_months,offset_seconds,offset_years|} = ${5:offset}
+    }
+
+Resource time rotating:
+  scope: source.tf
+  prefix: resource-time-rotating
+  description: Manages a rotating time resource, which keeps a rotating UTC timestamp stored in the Terraform state and proposes resource recreation when the locally sourced current time is beyond the rotation time.
+  body: |
+    resource time_rotating ${1:name} {
+      triggers = {
+        ${2:id} = ${3:value}
+      }
+
+      ${4|rotation_days,rotation_hours,rotation_minutes,rotation_months,rotation_seconds,rotation_years|} = ${5:rotation}
+    }
+
+Resource time static:
+  scope: source.tf
+  prefix: resource-time-static
+  description: Manages a static time resource, which keeps a locally sourced UTC timestamp stored in the Terraform state.
+  body: |
+    resource time_static ${1:name} {
+      triggers = {
+        ${2:id} = ${3:value}
+      }
     }
