@@ -15,6 +15,6 @@ insert_final_newline = true
 trim_trailing_spaces = false
 max_line_length = 80
 
-[*.{sh,json}]
+[*.{sh,ts,json}]
 indent_style = tab
 indent_size = 4

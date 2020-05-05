@@ -10,5 +10,6 @@ grammars/*.json
 snippets/*.json
 
 # Output
+out/
 *.log
 *.vsix

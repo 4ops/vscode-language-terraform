@@ -7,6 +7,7 @@
 
 # Visual Studio Code settings for extension development
 .vscode/
+.vscode-test/
 
 # Development tools
 .local/
@@ -14,6 +15,12 @@ scripts/
 examples/
 node_modules/
 package-lock.json
+tslint.json
+tsconfig.json
+out/test/**
+test/**
+src/**
+**/*.map
 
 # Keep only JSON grammars
 grammars/**
