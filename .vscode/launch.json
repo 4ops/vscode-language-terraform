@@ -3,18 +3,30 @@
 // Hover to view descriptions of existing attributes.
 // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Extension",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "${workspaceFolder}/examples",
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
-      "preLaunchTask": "Compile"
-    }
-  ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Extension",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"${workspaceFolder}/examples",
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": ["${workspaceRoot}/out/src/**/*.js"],
+			"preLaunchTask": "Watch"
+		},
+		{
+			"name": "Attach to Extension Host",
+			"type": "node",
+			"request": "attach",
+			"protocol": "inspector",
+			"port": 5870,
+			"restart": true,
+			"outFiles": ["${workspaceRoot}/out/src"]
+		}
+	]
 }
