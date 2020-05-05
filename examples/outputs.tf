@@ -1,14 +1,9 @@
-output "droplet" {
-  value = digitalocean_droplet.server
+output test {
+  value = local.test_value
 }
 
-output "name" {
+output name {
   value = data.template_file.name[*].rendered
-}
-
-output "fqdn" {
-  value = data.template_file.fqdn[*].rendered
-  sensitive = true
 }
 
 output "name" {

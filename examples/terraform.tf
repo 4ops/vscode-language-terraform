@@ -1,5 +1,3 @@
-# --- Clear look
-
 terraform {
   required_version = ">= 0.12.1"
 
@@ -19,6 +17,10 @@ terraform {
     options = null
     depth   = 42.55
   }
+}
+
+terraform {
+  required_version = ">= 0.12"
 }
 
 # --- Test strings

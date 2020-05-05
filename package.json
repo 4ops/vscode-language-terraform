@@ -32,6 +32,11 @@
     "Snippets"
   ],
   "contributes": {
+    "tf": {
+      "customData": [
+        "./data.json"
+      ]
+    },
     "languages": [
       {
         "id": "tf",
@@ -82,7 +87,8 @@
   },
   "scripts": {
     "build": "vsce package",
-    "compile": "node scripts/compile.js",
+    "precompile": "yq --prettyPrint --tojson read snippets/tf.yaml > snippets/tf.json",
+    "compile": "yq --prettyPrint --tojson read grammars/tf.yaml > grammars/tf.json && yq --prettyPrint --tojson read grammars/tfvars.yaml > grammars/tfvars.json",
     "pretest": "npm run compile -s",
     "prebuild": "npm test -s",
     "preversion": "git add -A .",
@@ -94,7 +100,6 @@
     "version": "npm run build -s"
   },
   "devDependencies": {
-    "js-yaml": "^3.13.1",
     "vsce": "^1.64.0"
   },
   "dependencies": {}

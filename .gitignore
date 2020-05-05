@@ -6,6 +6,9 @@ package-lock.json
 # Do not keep compiled grammars
 grammars/*.json
 
+# Do not keep compiled snippets
+snippets/*.json
+
 # Output
 *.log
 *.vsix

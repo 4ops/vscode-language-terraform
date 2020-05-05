@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.1.9
+
+- Rewrite all snippets
+- Use [yq](https://github.com/mikefarah/yq) instead `js-yaml` for converting YAML to JSON
+- Update readme
+- Cleanup repository files
+
 ## 0.1.8
 
 - Fix highlighting `any` type in `variable` block

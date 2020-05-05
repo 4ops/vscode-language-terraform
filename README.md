@@ -1,15 +1,25 @@
 # Terraform
 
-This is a Visual Studio Code extension. Adds base syntax support for the Terraform configuration language.
+This is a Visual Studio Code extension. Adds syntax support for the Terraform configuration language.
+
+## Features
+
+* Syntax highlighting
+* Basic syntax validation
+* Snippets
+* No server running
+* No telemetry
+
+## Animated examples
+
+![Snippets](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/snippets.gif)
+
+![Syntax](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screencasts/syntax.gif)
 
 ## Screenshots
 
-![Terraform](https://github.com/4ops/vscode-language-terraform/blob/master/screenshots/terraform.png?raw=true)
+![Locals](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/locals.png)
 
-![Variable](https://github.com/4ops/vscode-language-terraform/blob/master/screenshots/variable.png?raw=true)
+![Terraform](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/terraform.png)
 
-![Locals](https://github.com/4ops/vscode-language-terraform/blob/master/screenshots/locals.png?raw=true)
-
-## Two words from developer
-
-This is my first vscode extension and first experience with tmLanguage grammars. If you found some bugs or you have suggestion for improvement - I will be grateful for your feedback.
+![Variable](https://raw.githubusercontent.com/4ops/vscode-language-terraform/master/resources/screenshots/variable.png)

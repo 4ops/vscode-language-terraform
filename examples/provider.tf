@@ -1,6 +1,6 @@
 # --- Clear look
 
-provider "google" {
+provider google {
   alias   = "west"
   version = "~> 1.0"
   project = "acme-app"

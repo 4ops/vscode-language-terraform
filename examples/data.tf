@@ -1,4 +1,4 @@
-data "template_file" "cloud_config" {
+data template_file cloud_config {
   count = var.servers
 
   template = <<-TEMPLATE

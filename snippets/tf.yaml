@@ -1,0 +1,145 @@
+Terraform:
+  scope: source.tf
+  prefix: terraform
+  description: Simple terraform block with required version.
+  body: |
+    terraform {
+      required_version = ">= 0.12"
+    }
+
+Local values:
+  scope: source.tf
+  prefix: locals
+  description: A set of related local values.
+  body: |
+    locals {
+      ${1} = ${2}
+    }
+
+String variable:
+  scope: source.tf
+  prefix: variable-string
+  description: Input variable with `string` type, `default` value and `description`.
+  body: |
+    variable ${1} {
+      type        = string
+      default     = ${2|"",null|}
+      description = "${3}"
+    }
+
+Numeric variable:
+  scope: source.tf
+  prefix: variable-number
+  description: Input variable with `number` type, `default` value and `description`.
+  body: |
+    variable ${1} {
+      type        = number
+      default     = ${2|-1,0,1,null|}
+      description = "${3}"
+    }
+
+Boolean variable:
+  scope: source.tf
+  prefix: variable-bool
+  description: Input variable with `bool` type, `default` value and `description`.
+  body: |
+    variable ${1} {
+      type        = bool
+      default     = ${2|true,false,null|}
+      description = "${3}"
+    }
+
+List strings variable:
+  scope: source.tf
+  prefix: variable-list-strings
+  description: Input variable with list of string, `default` value and `description`.
+  body: |
+    variable ${1} {
+      type        = list(string)
+      default     = ${2|[],null|}
+      description = "${3}"
+    }
+
+Map variable:
+  scope: source.tf
+  prefix: variable-map
+  description: Input variable with map, `default` value and `description`.
+  body: |
+    variable ${1} {
+      type        = map(any)
+      default     = ${2|{},null|}
+      description = "${3}"
+    }
+
+Output:
+  scope: source.tf
+  prefix: output
+  description: Output value with `description`.
+  body: |
+    output ${1} {
+      value       = ${2}
+      description = "${3}"
+    }
+
+Sensitive output:
+  scope: source.tf
+  prefix: output-sensitive
+  description: Output value with `description` (sensitive content).
+  body: |
+    output ${1} {
+      value       = ${2}
+      description = "${3}"
+      sensitive   = true
+    }
+
+Output value depended:
+  scope: source.tf
+  prefix: output-depends
+  description: Output value with `description` with dependencies.
+  body: |
+    output ${1} {
+      value       = ${2}
+      description = "${3}"
+      depends_on  = [
+        ${0}
+      ]
+    }
+
+Local module:
+  scope: source.tf
+  prefix: module-local
+  description: Child module configuration block placed in local `modules` directory.
+  body: |
+    module ${1} {
+      source = "./modules/${1}"
+      ${2}   = ${0}
+    }
+
+Registry module:
+  scope: source.tf
+  prefix: module-registry
+  description: Includes child module from Terraform registry.
+  body: |
+    module ${1} {
+      source  = "${2}/${1}/${3}"
+      version = "${4|1.0.0|}"
+      ${5}    = ${0}
+    }
+
+Resource:
+  scope: source.tf
+  prefix: resource
+  description: Simple `resource` block.
+  body: |
+    resource ${1} ${2} {
+      ${0}
+    }
+
+Datasource:
+  scope: source.tf
+  prefix: data
+  description: Simple `data` block.
+  body: |
+    data ${1} ${2} {
+      ${0}
+    }

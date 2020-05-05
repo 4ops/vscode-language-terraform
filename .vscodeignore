@@ -4,8 +4,6 @@
 
 # Code styling settings
 .editorconfig
-.prettierignore
-.prettierrc
 
 # Visual Studio Code settings for extension development
 .vscode/
@@ -20,6 +18,10 @@ package-lock.json
 # Keep only JSON grammars
 grammars/**
 !grammars/*.json
+
+# Keep only JSON snippets
+snippets/**
+!snippets/*.json
 
 # Output
 *.log
