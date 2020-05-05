@@ -10,6 +10,7 @@ This is a Visual Studio Code extension. Adds syntax support for the Terraform co
 * No language server
 * No telemetry
 * No popups
+* No credentials required
 
 ## Snippets
 
