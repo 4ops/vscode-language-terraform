@@ -1,106 +1,99 @@
 {
-  "name": "terraform",
-  "displayName": "Terraform",
-  "description": "Terraform configuration language support",
-  "version": "0.1.10",
-  "icon": "icon.png",
-  "keywords": [
-    "terraform",
-    "tf",
-    "tfvars",
-    "tfstate",
-    "hashicorp",
-    "hcl"
-  ],
-  "publisher": "4ops",
-  "author": {
-    "name": "Anton Kulikov"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/4ops/vscode-language-terraform.git"
-  },
-  "bugs": {
-    "url": "https://github.com/4ops/vscode-language-terraform/issues"
-  },
-  "license": "MIT",
-  "engines": {
-    "vscode": "^1.34.0"
-  },
-  "categories": [
-    "Programming Languages",
-    "Snippets"
-  ],
-  "contributes": {
-    "tf": {
-      "customData": [
-        "./data.json"
-      ]
-    },
-    "languages": [
-      {
-        "id": "tf",
-        "aliases": [
-          "Terraform",
-          "terraform"
-        ],
-        "extensions": [
-          ".tf"
-        ],
-        "configuration": "./language-configuration.json"
-      },
-      {
-        "id": "tfvars",
-        "aliases": [
-          "Terraform Variables"
-        ],
-        "extensions": [
-          ".tfvars"
-        ],
-        "configuration": "./language-configuration.json"
-      },
-      {
-        "id": "json",
-        "extensions": [
-          ".tfstate"
-        ]
-      }
-    ],
-    "grammars": [
-      {
-        "language": "tf",
-        "scopeName": "source.tf",
-        "path": "./grammars/tf.json"
-      },
-      {
-        "language": "tfvars",
-        "scopeName": "source.tfvars",
-        "path": "./grammars/tfvars.json"
-      }
-    ],
-    "snippets": [
-      {
-        "language": "tf",
-        "path": "./snippets/tf.json"
-      }
-    ]
-  },
-  "scripts": {
-    "build": "vsce package",
-    "precompile": "yq --prettyPrint --tojson read snippets/tf.yaml > snippets/tf.json",
-    "compile": "yq --prettyPrint --tojson read grammars/tf.yaml > grammars/tf.json && yq --prettyPrint --tojson read grammars/tfvars.yaml > grammars/tfvars.json",
-    "pretest": "npm run compile -s",
-    "prebuild": "npm test -s",
-    "preversion": "git add -A .",
-    "postversion": "npm run push -s",
-    "prepush": "git push",
-    "push": "git push --tags",
-    "postpush": "echo vsce publish",
-    "test": "echo No tests are implemented",
-    "version": "npm run build -s"
-  },
-  "devDependencies": {
-    "vsce": "^1.64.0"
-  },
-  "dependencies": {}
+	"name": "terraform",
+	"displayName": "Terraform",
+	"description": "Terraform configuration language support",
+	"version": "0.1.10",
+	"icon": "icon.png",
+	"keywords": [
+		"terraform",
+		"tf",
+		"tfvars",
+		"tfstate",
+		"hashicorp",
+		"hcl"
+	],
+	"publisher": "4ops",
+	"author": {
+		"name": "Anton Kulikov"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/4ops/vscode-language-terraform.git"
+	},
+	"bugs": {
+		"url": "https://github.com/4ops/vscode-language-terraform/issues"
+	},
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.34.0"
+	},
+	"categories": [
+		"Programming Languages",
+		"Snippets"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "tf",
+				"aliases": [
+					"Terraform",
+					"terraform"
+				],
+				"extensions": [
+					".tf"
+				],
+				"configuration": "./language-configuration.json"
+			},
+			{
+				"id": "tfvars",
+				"aliases": [
+					"Terraform Variables"
+				],
+				"extensions": [
+					".tfvars"
+				],
+				"configuration": "./language-configuration.json"
+			},
+			{
+				"id": "json",
+				"extensions": [
+					".tfstate"
+				]
+			}
+		],
+		"grammars": [
+			{
+				"language": "tf",
+				"scopeName": "source.tf",
+				"path": "./grammars/tf.json"
+			},
+			{
+				"language": "tfvars",
+				"scopeName": "source.tfvars",
+				"path": "./grammars/tfvars.json"
+			}
+		],
+		"snippets": [
+			{
+				"language": "tf",
+				"path": "./snippets/tf.json"
+			}
+		]
+	},
+	"scripts": {
+		"build": "npm run compile -s",
+		"compile-tf": "yq r --prettyPrint --tojson grammars/tf.yaml > grammars/tf.json",
+		"compile-tfvars": "yq r --prettyPrint --tojson grammars/tfvars.yaml > grammars/tfvars.json",
+		"compile-snippets": "yq r --prettyPrint --tojson snippets/tf.yaml > snippets/tf.json",
+		"compile": "npm run compile-tf && npm run compile-tfvars && npm run compile-snippets",
+		"preversion": "git add -A .",
+		"postversion": "npm run push -s",
+		"prepush": "git push",
+		"push": "git push --tags",
+		"version": "npm run build -s"
+	},
+	"devDependencies": {
+		"vsce": "^1.64.0"
+	},
+	"dependencies": {}
 }

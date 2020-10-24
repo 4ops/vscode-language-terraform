@@ -16,17 +16,7 @@
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"outFiles": ["${workspaceRoot}/out/src/**/*.js"],
-			"preLaunchTask": "Watch"
-		},
-		{
-			"name": "Attach to Extension Host",
-			"type": "node",
-			"request": "attach",
-			"protocol": "inspector",
-			"port": 5870,
-			"restart": true,
-			"outFiles": ["${workspaceRoot}/out/src"]
+			"outFiles": ["${workspaceRoot}/out/src/**/*.js"]
 		}
 	]
 }
