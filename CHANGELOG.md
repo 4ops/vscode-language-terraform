@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+- Added Terragrunt syntax highlighting
+
 ## 0.1.10
 
 - Update common snippets
