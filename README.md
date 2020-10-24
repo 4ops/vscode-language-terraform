@@ -1,12 +1,13 @@
 # Terraform
 
-This is a Visual Studio Code extension. Adds syntax support for the Terraform configuration language.
+This is a Visual Studio Code extension. Adds syntax support for the Terraform and Terragrunt configuration language.
 
 ## Features
 
 * Syntax highlighting
 * Basic syntax validation
 * Snippets
+* Terragrunt supported
 * No language server
 * No telemetry
 * No popups
