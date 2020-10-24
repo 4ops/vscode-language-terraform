@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.2.0
 
 - Added Terragrunt syntax highlighting
 
