@@ -18,20 +18,12 @@ patterns:
     patterns:
       - include: "#comments"
       - include: "#version"
-      - match: '\b(source)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+      - match: '\b(source)(?:\s+)?(=)(?:\s+)?'
         name: meta.terraform.source.terragrunt
         captures:
           1: { name: storage.modifier.source.terragrunt }
           2: { name: keyword.operator.assignment.terragrunt }
-          3:
-            {
-              name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt,
-            }
-          4: { name: string.quoted.double.terragrunt }
-          5:
-            {
-              name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt,
-            }
+      - include: "#definition-right"
       - match: '\b(required_version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
         name: meta.terraform.required_version.terragrunt
         captures:
@@ -338,6 +330,26 @@ patterns:
       - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
         captures:
           1: { name: support.resource.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.remote-state.terragrunt"
+    begin: '\b(remote_state)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.remote-state.attribute.terragrunt }
           2: { name: keyword.operator.assignment.terragrunt }
       # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
       #   captures:
