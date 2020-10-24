@@ -18,10 +18,24 @@ patterns:
     patterns:
       - include: "#comments"
       - include: "#version"
+      - match: '\b(source)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+        name: meta.terraform.source.terragrunt
+        captures:
+          1: { name: storage.modifier.source.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+          3:
+            {
+              name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt,
+            }
+          4: { name: string.quoted.double.terragrunt }
+          5:
+            {
+              name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt,
+            }
       - match: '\b(required_version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
         name: meta.terraform.required_version.terragrunt
         captures:
-          # 1: { name: storage.modifier.required_version.terragrunt }
+          1: { name: storage.modifier.required_version.terragrunt }
           2: { name: keyword.operator.assignment.terragrunt }
           3:
             {
@@ -110,6 +124,62 @@ patterns:
           2: { name: keyword.operator.assignment.terragrunt }
       - include: "#definition-right"
 
+  - name: "meta.include.terragrunt"
+    begin: '\b(include)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b(path)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: storage.modifier.path.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.inputs.terragrunt"
+    begin: '\b(inputs)([\w\-\"$])?(?:\s+)?(=)(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: keyword.operator.assignment.terragrunt }
+      4: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?!=|>|<)'
+        captures:
+          1: { name: variable.other.readwrite.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.dependency.terragrunt"
+    begin: '\b(dependency)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.name.dependency.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.dependency.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
   - name: "meta.module.terragrunt"
     begin: '\b(module)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
     beginCaptures:
@@ -129,6 +199,23 @@ patterns:
       - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
         captures:
           1: { name: support.module.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.dependencies.terragrunt"
+    begin: '\b(dependencies)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b(paths)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: storage.modifier.path.terragrunt }
           2: { name: keyword.operator.assignment.terragrunt }
       - include: "#definition-right"
 
@@ -269,6 +356,7 @@ repository:
       - include: "#support-variable"
       - include: "#support-local"
       - include: "#support-module"
+      - include: "#support-dependency"
       - include: "#support-terraform"
       - include: "#support-data"
       - include: "#support-function-numeric"
@@ -278,8 +366,11 @@ repository:
       - include: "#support-function-filesystem"
       - include: "#support-function-datetime"
       - include: "#support-function-crypto"
+      - include: "#support-function-cli"
+      - include: "#support-function-aws"
       - include: "#support-function-network"
       - include: "#support-function-conversion"
+      - include: "#support-function-other"
       - include: "#constants-decimal"
       - include: "#constants-boolean"
       - include: "#constants-language"
@@ -339,6 +430,15 @@ repository:
       4: { name: punctuation.accessor.terragrunt }
       5: { name: support.module.$3.attribute.terragrunt }
 
+  support-dependency:
+    match: '(?<!\.)\b(dependency)(\.)(\w+)(\.)?(\w+)?\b'
+    captures:
+      1: { name: support.class.dependency.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.dependency.$3.terragrunt }
+      4: { name: punctuation.accessor.terragrunt }
+      5: { name: support.dependency.$3.attribute.terragrunt }
+
   support-terraform:
     match: '(?<!\.)\b(terraform)(\.)(\w+)\b'
     captures:
@@ -347,7 +447,7 @@ repository:
       3: { name: support.terraform.$3.terragrunt }
 
   support-data:
-    match: '(?<!\.)\b(data)(\.)(\w+)(\.)?(\w+)?\b'
+    match: '(?<!\.|\-)\b(data)(\.)(\w+)(\.)?(\w+)?\b'
     captures:
       1: { name: support.class.data.terragrunt }
       2: { name: punctuation.accessor.terragrunt }
@@ -373,7 +473,7 @@ repository:
 
   support-function-filesystem:
     name: support.function.builtin.filesystem.terragrunt
-    match: '(?<!\.)\b(abspath|dirname|pathexpand|basename|fileexists|filebase64|fileset|templatefile|file)\b(?=\()'
+    match: '(?<!\.)\b(read_terragrunt_config|path_relative_to_include|get_terragrunt_dir|path_relative_from_include|find_in_parent_folders|get_parent_terragrunt_dir|abspath|dirname|pathexpand|basename|fileexists|filebase64|fileset|templatefile|file)\b(?=\()'
 
   support-function-datetime:
     name: support.function.builtin.datetime.terragrunt
@@ -381,7 +481,15 @@ repository:
 
   support-function-crypto:
     name: support.function.builtin.crypto.terragrunt
-    match: '(?<!\.)\b(base64sha256|base64sha512|bcrypt|filebase64sha256|filebase64sha512|filemd5|filesha1|filesha256|filesha512|md5|rsadecrypt|sha1|sha256|sha512|uuidv5|uuid)\b(?=\()'
+    match: '(?<!\.)\b(sops_decrypt_file|base64sha256|base64sha512|bcrypt|filebase64sha256|filebase64sha512|filemd5|filesha1|filesha256|filesha512|md5|rsadecrypt|sha1|sha256|sha512|uuidv5|uuid)\b(?=\()'
+
+  support-function-cli:
+    name: support.function.builtin.cli.terragrunt
+    match: '(?<!\.)\b(get_terraform_commands_that_need_vars|get_terraform_commands_that_need_input|get_terraform_commands_that_need_locking|get_terraform_commands_that_need_parallelism|get_terraform_command|get_terraform_cli_args|run_cmd)\b(?=\()'
+
+  support-function-aws:
+    name: support.function.builtin.aws.terragrunt
+    match: '(?<!\.)\b(get_aws_account_id|get_aws_caller_identity_arn|get_aws_caller_identity_user_id)\b(?=\()'
 
   support-function-network:
     name: support.function.builtin.network.terragrunt
@@ -390,6 +498,10 @@ repository:
   support-function-conversion:
     name: support.function.builtin.conversion.terragrunt
     match: '(?<!\.)\b(tobool|tolist|tomap|tonumber|toset|tostring)\b(?=\()'
+
+  support-function-other:
+    name: support.function.builtin.other.terragrunt
+    match: '(?<!\.)\b(get_env|get_platform)\b(?=\()'
 
   constants-decimal:
     match: '\b\d+(\.)?(\d+)?'
