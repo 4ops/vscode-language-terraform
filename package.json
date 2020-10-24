@@ -10,7 +10,8 @@
 		"tfvars",
 		"tfstate",
 		"hashicorp",
-		"hcl"
+		"hcl",
+		"terragrunt"
 	],
 	"publisher": "4ops",
 	"author": {
@@ -55,6 +56,16 @@
 				"configuration": "./language-configuration.json"
 			},
 			{
+				"id": "terragrunt",
+				"aliases": [
+					"Terragrunt"
+				],
+				"extensions": [
+					"terragrunt.hcl"
+				],
+				"configuration": "./language-configuration.json"
+			},
+			{
 				"id": "json",
 				"extensions": [
 					".tfstate"
@@ -71,6 +82,11 @@
 				"language": "tfvars",
 				"scopeName": "source.tfvars",
 				"path": "./grammars/tfvars.json"
+			},
+			{
+				"language": "terragrunt",
+				"scopeName": "source.terragrunt",
+				"path": "./grammars/terragrunt.json"
 			}
 		],
 		"snippets": [
@@ -84,8 +100,9 @@
 		"build": "npm run compile -s",
 		"compile-tf": "yq r --prettyPrint --tojson grammars/tf.yaml > grammars/tf.json",
 		"compile-tfvars": "yq r --prettyPrint --tojson grammars/tfvars.yaml > grammars/tfvars.json",
+		"compile-terragrunt": "yq r --prettyPrint --tojson grammars/terragrunt.yaml > grammars/terragrunt.json",
 		"compile-snippets": "yq r --prettyPrint --tojson snippets/tf.yaml > snippets/tf.json",
-		"compile": "npm run compile-tf && npm run compile-tfvars && npm run compile-snippets",
+		"compile": "npm run compile-tf && npm run compile-tfvars && npm run compile-terragrunt && npm run compile-snippets",
 		"preversion": "git add -A .",
 		"postversion": "npm run push -s",
 		"prepush": "git push",

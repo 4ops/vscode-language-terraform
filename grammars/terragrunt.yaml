@@ -1,0 +1,549 @@
+name: Terragrunt
+scopeName: source.terragrunt
+fileTypes: [terragrunt]
+uuid: 61078867-6d09-46ff-856f-b7b7cf404233
+
+patterns:
+  - include: "#comments"
+
+  - name: "meta.terraform.terragrunt"
+    begin: '\b(terraform)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b(required_version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+        name: meta.terraform.required_version.terragrunt
+        captures:
+          # 1: { name: storage.modifier.required_version.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+          3:
+            {
+              name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt,
+            }
+          4: { name: string.quoted.double.terragrunt }
+          5:
+            {
+              name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt,
+            }
+      - name: "meta.terraform.required_providers.terragrunt"
+        begin: '\b(required_providers)([\w\-\"$])?(?:\s+)?({)'
+        beginCaptures:
+          # 1: { name: keyword.control.$1.terragrunt }
+          2: { name: invalid.illegal.keyword.$1.terragrunt }
+          3: { name: punctuation.definition.block.begin.terragrunt }
+        end: "}"
+        endCaptures:
+          0: { name: punctuation.definition.block.end.terragrunt }
+        patterns:
+          - include: "#comments"
+          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+            captures:
+              1: { name: entity.name.provider.terragrunt }
+              2: { name: keyword.operator.assignment.terragrunt }
+              3:
+                {
+                  name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt,
+                }
+              4: { name: string.quoted.double.terragrunt }
+              5:
+                {
+                  name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt,
+                }
+      - name: "meta.terraform.backend.terragrunt"
+        begin: '\b(backend)(?:\s+)?(")([^$"]+)?(")(?:\s+)?({)'
+        beginCaptures:
+          # 1: { name: keyword.control.$1.terragrunt }
+          2:
+            {
+              name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt,
+            }
+          3:
+            name: string.quoted.double.terragrunt
+            patterns:
+              - match: '(?<=")([^a-z]+)'
+                name: invalid.illegal.terragrunt
+          4:
+            {
+              name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt,
+            }
+          5: { name: punctuation.definition.block.begin.terragrunt }
+        end: "}"
+        endCaptures:
+          0: { name: punctuation.definition.block.end.terragrunt }
+        patterns:
+          - include: "#comments"
+          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+            captures:
+              1: { name: support.backend.attribute.terragrunt }
+              2: { name: keyword.operator.assignment.terragrunt }
+              3:
+                {
+                  name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt,
+                }
+              4: { name: string.quoted.double.terragrunt }
+              5:
+                {
+                  name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt,
+                }
+          - include: "#definition-right"
+
+  - name: "meta.locals.terragrunt"
+    begin: '\b(locals)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?!=|>|<)'
+        captures:
+          1: { name: variable.other.readwrite.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.module.terragrunt"
+    begin: '\b(module)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.name.module.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.module.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.provider.terragrunt"
+    begin: '\b(provider)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.name.provider.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.provider.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.variable.terragrunt"
+    begin: '\b(variable)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.name.$1.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b(type|default|description)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: meta.keyword.$1.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - match: '\b(string|number|bool|list|map|set|object|touple|any)\b'
+        captures:
+          1: { name: meta.keyword.$1.terragrunt }
+      - include: "#definition-right"
+      - match: '\S'
+        name: invalid.illegal.keyword.variable.terragrunt
+
+  - name: "meta.output.terragrunt"
+    begin: '\b(output)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.name.$1.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b(name|value|description|sensitive|depends_on)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.output.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.data.terragrunt"
+    begin: '\b(data)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.type.$1.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      7: { name: string.quoted.double.terragrunt entity.name.$1.terragrunt }
+      8: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      9: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.data.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.terragrunt }
+      - include: "#definition-right"
+
+  - name: "meta.resource.terragrunt"
+    begin: '\b(resource)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.type.$1.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      7: { name: string.quoted.double.terragrunt entity.name.$1.terragrunt }
+      8: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      9: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.resource.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.terragrunt }
+      - include: "#definition-right"
+
+  - include: "#invalid"
+
+repository:
+  definition-right:
+    patterns:
+      - include: "#comments"
+      - include: "#support-path"
+      - include: "#support-self"
+      - include: "#support-count-index"
+      - include: "#support-variable"
+      - include: "#support-local"
+      - include: "#support-module"
+      - include: "#support-terraform"
+      - include: "#support-data"
+      - include: "#support-function-numeric"
+      - include: "#support-function-string"
+      - include: "#support-function-collection"
+      - include: "#support-function-encoding"
+      - include: "#support-function-filesystem"
+      - include: "#support-function-datetime"
+      - include: "#support-function-crypto"
+      - include: "#support-function-network"
+      - include: "#support-function-conversion"
+      - include: "#constants-decimal"
+      - include: "#constants-boolean"
+      - include: "#constants-language"
+      - include: "#punctuation-comma"
+      - include: "#punctuation-accessor"
+      - include: "#keyword-ternary"
+      - include: "#keyword-comparison"
+      - include: "#keyword-conditional"
+      - include: "#keyword-loop"
+      - include: "#braces-round"
+      - include: "#braces-square"
+      - include: "#strings"
+      - include: "#heredoc"
+      - include: "#blocks"
+
+  support-path:
+    match: '(?<!\.)\b(path)(\.)(\w+)\b'
+    captures:
+      1: { name: support.class.path.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.path.$3.terragrunt }
+
+  support-self:
+    match: '(?<!\.)\b(self)(\.)(\w+)\b'
+    captures:
+      1: { name: support.class.self.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.self.$3.terragrunt }
+
+  support-count-index:
+    match: '(?<!\.)\b(count)(\.)(index)\b'
+    captures:
+      1: { name: support.class.count.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.variable.index.terragrunt }
+
+  support-variable:
+    match: '(?<!\.)\b(var)(\.)(\w+)\b'
+    captures:
+      1: { name: support.class.variable.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.variable.$3.terragrunt }
+
+  support-local:
+    match: '(?<!\.)\b(local)(\.)(\w+)\b'
+    captures:
+      1: { name: support.class.local.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.local.$3.terragrunt }
+
+  support-module:
+    match: '(?<!\.)\b(module)(\.)(\w+)(\.)?(\w+)?\b'
+    captures:
+      1: { name: support.class.module.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.module.$3.terragrunt }
+      4: { name: punctuation.accessor.terragrunt }
+      5: { name: support.module.$3.attribute.terragrunt }
+
+  support-terraform:
+    match: '(?<!\.)\b(terraform)(\.)(\w+)\b'
+    captures:
+      1: { name: support.class.terraform.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.terraform.$3.terragrunt }
+
+  support-data:
+    match: '(?<!\.)\b(data)(\.)(\w+)(\.)?(\w+)?\b'
+    captures:
+      1: { name: support.class.data.terragrunt }
+      2: { name: punctuation.accessor.terragrunt }
+      3: { name: support.data.$3.terragrunt }
+      4: { name: punctuation.accessor.terragrunt }
+      5: { name: support.data.$3.attribute.terragrunt }
+
+  support-function-numeric:
+    match: '(?<!\.)\b(abs|ceil|floor|log|max|min|pow|signum|parseint)\b(?=\()'
+    name: support.function.builtin.numeric.terragrunt
+
+  support-function-string:
+    match: '(?<!\.)\b(chomp|formatlist|format|indent|join|lower|regexall|regex|replace|split|strrev|substr|title|trimspace|trimprefix|trimsuffix|trim|upper)\b(?=\()'
+    name: support.function.builtin.string.terragrunt
+
+  support-function-collection:
+    name: support.function.builtin.collection.terragrunt
+    match: '(?<!\.)\b(chunklist|coalescelist|coalesce|compact|concat|contains|distinct|element|flatten|index|keys|length|list|lookup|map|matchkeys|merge|range|reverse|setintersection|setproduct|setunion|slice|sort|transpose|values|zipmap)\b(?=\()'
+
+  support-function-encoding:
+    name: support.function.builtin.encoding.terragrunt
+    match: '(?<!\.)\b(base64decode|base64encode|base64gzip|csvdecode|jsondecode|jsonencode|urlencode|yamldecode|yamlencode)\b(?=\()'
+
+  support-function-filesystem:
+    name: support.function.builtin.filesystem.terragrunt
+    match: '(?<!\.)\b(abspath|dirname|pathexpand|basename|fileexists|filebase64|fileset|templatefile|file)\b(?=\()'
+
+  support-function-datetime:
+    name: support.function.builtin.datetime.terragrunt
+    match: '(?<!\.)\b(formatdate|timeadd|timestamp)\b(?=\()'
+
+  support-function-crypto:
+    name: support.function.builtin.crypto.terragrunt
+    match: '(?<!\.)\b(base64sha256|base64sha512|bcrypt|filebase64sha256|filebase64sha512|filemd5|filesha1|filesha256|filesha512|md5|rsadecrypt|sha1|sha256|sha512|uuidv5|uuid)\b(?=\()'
+
+  support-function-network:
+    name: support.function.builtin.network.terragrunt
+    match: '(?<!\.)\b(cidrhost|cidrnetmask|cidrsubnets|cidrsubnet)\b(?=\()'
+
+  support-function-conversion:
+    name: support.function.builtin.conversion.terragrunt
+    match: '(?<!\.)\b(tobool|tolist|tomap|tonumber|toset|tostring)\b(?=\()'
+
+  constants-decimal:
+    match: '\b\d+(\.)?(\d+)?'
+    name: constant.numeric.decimal.terragrunt
+    captures:
+      1: { name: meta.delimiter.decimal.period.js }
+
+  constants-boolean:
+    match: '\b(true|false)\b'
+    name: constant.language.boolean.$1.js
+
+  constants-language:
+    match: '\b(null)\b'
+    name: constant.language.$1.js
+
+  punctuation-comma:
+    match: ","
+    name: punctuation.separator.comma.js
+
+  punctuation-accessor:
+    match: '(?<=\w)\.(?=\w)'
+    name: punctuation.accessor.terragrunt
+
+  keyword-ternary:
+    match: '\?|:'
+    name: keyword.operator.ternary.terragrunt
+
+  keyword-comparison:
+    match: "~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]"
+    name: keyword.operator.comparison.terragrunt
+
+  keyword-conditional:
+    match: '\b(if|else|endif)\b'
+    name: keyword.control.conditional.terragrunt
+
+  keyword-loop:
+    match: '\b(for|in|endfor)\b'
+    name: keyword.control.loop.terragrunt
+
+  braces-round:
+    match: '\(|\)'
+    name: meta.brace.round.terragrunt
+
+  braces-square:
+    match: '\[|\]'
+    name: meta.brace.square.terragrunt
+
+  blocks:
+    begin: "{"
+    beginCaptures:
+      0: { name: punctuation.definition.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.definition.block.end.terragrunt }
+    name: meta.block.terragrunt
+    patterns:
+      - include: "#definition-right"
+      - include: "#blocks"
+
+  escape-char:
+    match: '\\\"'
+    name: constant.character.escape.terragrunt
+
+  string-interpolation:
+    begin: '\${'
+    beginCaptures:
+      0: { name: punctuation.definition.template-expression.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.definition.template-expression.end.terragrunt }
+    name: meta.template.expression.terragrunt meta.embedded.line.terragrunt
+    patterns:
+      - include: "#definition-right"
+
+  string-templates:
+    begin: "%{"
+    beginCaptures:
+      0: { name: punctuation.definition.template-expression.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.definition.template-expression.end.terragrunt }
+    name: meta.template.expression.terragrunt meta.embedded.line.terragrunt
+    patterns:
+      - include: "#definition-right"
+
+  strings:
+    begin: '"'
+    beginCaptures:
+      0: { name: punctuation.definition.string.template.begin.terragrunt }
+    end: '"'
+    endCaptures:
+      0: { name: punctuation.definition.string.template.end.terragrunt }
+    name: string.template.terragrunt
+    patterns:
+      - include: "#escape-char"
+      - match: '\$\${'
+      - include: "#string-interpolation"
+      - match: "%%{"
+      - include: "#string-templates"
+
+  heredoc:
+    begin: '<<[\-]?(\w+)'
+    beginCaptures:
+      1: { name: punctuation.definition.string.template.begin.$1.terragrunt }
+    end: '\1'
+    endCaptures:
+      0: { name: punctuation.definition.string.template.end.terragrunt }
+    name: string.unquoted.here-doc.terragrunt
+    patterns:
+      - match: '\$\${'
+      - include: "#string-interpolation"
+      - match: "%%{"
+      - include: "#string-templates"
+
+  version:
+    match: '\b(version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    name: meta.version.terragrunt
+    captures:
+      1: { name: storage.modifier.version.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+
+  comment-line-number-sign:
+    name: comment.line.number-sign.terragrunt
+    begin: "#"
+    beginCaptures:
+      0: { name: punctuation.definition.comment.terragrunt }
+    end: "$"
+
+  comment-line-double-slash:
+    name: comment.line.double-slash.terragrunt
+    begin: "//"
+    beginCaptures:
+      0: { name: punctuation.definition.comment.terragrunt }
+    end: "$"
+
+  comment-block:
+    name: comment.block.terragrunt
+    begin: '/\*'
+    beginCaptures:
+      0: { name: punctuation.definition.comment.begin.terragrunt }
+    end: '\*/'
+    endCaptures:
+      0: { name: punctuation.definition.comment.end.terragrunt }
+
+  comments:
+    patterns:
+      - include: "#comment-line-number-sign"
+      - include: "#comment-line-double-slash"
+      - include: "#comment-block"
+
+  invalid:
+    name: invalid.illegal.terragrunt
+    match: \S
