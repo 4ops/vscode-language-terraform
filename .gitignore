@@ -10,5 +10,6 @@ snippets/*.json
 
 # Output
 out/
+dist/
 *.log
 *.vsix

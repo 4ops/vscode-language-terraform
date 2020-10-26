@@ -3,12 +3,12 @@
 
 LICENSE           text
 
-.gitattributes    text
-.gitignore        text
-.editorconfig     text
+.gitattributes    text -diff
+.gitignore        text -diff
+.editorconfig     text -diff
 .prettierignore   text
 .prettierrc       text
-.vscodeignore     text
+.vscodeignore     text -diff
 
 package-lock.json text -diff
 
