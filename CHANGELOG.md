@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.1
+
+- Added variable validation support ([#5](https://github.com/4ops/vscode-language-terraform/issues/5))
+
 ## 0.2.0
 
 - Added Terragrunt syntax highlighting
