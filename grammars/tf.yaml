@@ -169,7 +169,7 @@ patterns:
       0: { name: punctuation.declaration.block.end.tf }
     patterns:
       - include: "#comments"
-      - match: '\b(type|default|description)(?:\s+)?(=)(?:\s+)?'
+      - match: '\b(type|default|description|validation)(?:\s+)?(=)?(?:\s+)?'
         captures:
           1: { name: meta.keyword.$1.tf }
           2: { name: keyword.operator.assignment.tf }
