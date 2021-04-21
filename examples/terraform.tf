@@ -7,6 +7,10 @@ terraform {
     template     = ">= 2.1"
     tls          = "~> 2.0"
     null         = "~> 2.1"
+
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+    }
   }
 
   backend "s3" {

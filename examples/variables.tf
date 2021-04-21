@@ -89,4 +89,33 @@ variable "ipv6" {
   description = <<-DESCRIPTION
     Bitcoin extra arguments for testnet.
   DESCRIPTION
+
+  sensitive = true
+}
+
+variable "timestamp" {
+  type        = string
+
+  validation {
+    # formatdate fails if the second argument is not a valid timestamp
+    condition     = can(formatdate("", var.timestamp))
+    error_message = "The timestamp argument requires a valid RFC 3339 timestamp."
+  }
+}
+
+variable "storage" {
+  type = object({
+    name    = string
+    enabled = optional(bool)
+    website = object({
+      index_document = optional(string)
+      error_document = optional(string)
+    })
+    documents = map(
+      object({
+        source_file  = string
+        content_type = optional(string)
+      })
+    )
+  })
 }

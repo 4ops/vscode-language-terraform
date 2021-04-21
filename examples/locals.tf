@@ -54,3 +54,51 @@ locals {
     data.template.rendered,
   ]))
 }
+
+variable "example" {
+  type = any
+}
+
+locals {
+  example = try(
+    [tostring(var.example)],
+    tolist(var.example),
+  )
+}
+
+locals {
+  raw_value = yamldecode(file("${path.module}/example.yaml"))
+  normalized_value = {
+    name   = tostring(try(local.raw_value.name, null))
+    groups = try(local.raw_value.groups, [])
+  }
+}
+
+locals {
+  storage = defaults(var.storage, {
+    # If "enabled" isn't set then it will default
+    # to true.
+    enabled = true
+
+    # The "website" attribute is required, but
+    # it's here to provide defaults for the
+    # optional attributes inside.
+    website = {
+      index_document = "index.html"
+      error_document = "error.html"
+    }
+
+    # The "documents" attribute has a map type,
+    # so the default value represents defaults
+    # to be applied to all of the elements in
+    # the map, not for the map itself. Therefore
+    # it's a single object matching the map
+    # element type, not a map itself.
+    documents = {
+      # If _any_ of the map elements omit
+      # content_type then this default will be
+      # used instead.
+      content_type = "application/octet-stream"
+    }
+  })
+}

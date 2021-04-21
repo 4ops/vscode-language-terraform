@@ -22,3 +22,6 @@ output "fqdn" {
   description = "lasjdkaslkdjalksjdlkjaskd"
 }
 
+output "sensitive_example_hash" {
+  value = nonsensitive(sha256(var.sensitive_example))
+}

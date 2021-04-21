@@ -35,27 +35,19 @@ patterns:
       - name: "meta.terraform.required_providers.tf"
         begin: '\b(required_providers)([\w\-\"$])?(?:\s+)?({)'
         beginCaptures:
-          # 1: { name: keyword.control.$1.tf }
+          1: { name: keyword.declaration.$1.tf }
           2: { name: invalid.illegal.keyword.$1.tf }
-          3: { name: punctuation.definition.block.begin.tf }
+          3: { name: punctuation.declaration.block.begin.tf }
         end: "}"
         endCaptures:
           0: { name: punctuation.definition.block.end.tf }
         patterns:
           - include: "#comments"
-          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
             captures:
-              1: { name: entity.name.provider.tf }
+              1: { name: support.provider.attribute.tf }
               2: { name: keyword.operator.assignment.tf }
-              3:
-                {
-                  name: string.quoted.double.tf punctuation.definition.string.begin.tf,
-                }
-              4: { name: string.quoted.double.tf }
-              5:
-                {
-                  name: string.quoted.double.tf punctuation.definition.string.end.tf,
-                }
+          - include: "#definition-right"
       - name: "meta.terraform.backend.tf"
         begin: '\b(backend)(?:\s+)?(")([^$"]+)?(")(?:\s+)?({)'
         beginCaptures:
@@ -169,7 +161,7 @@ patterns:
       0: { name: punctuation.declaration.block.end.tf }
     patterns:
       - include: "#comments"
-      - match: '\b(type|default|description|validation)(?:\s+)?(=)?(?:\s+)?'
+      - match: '\b(type|default|description|validation|sensitive)(?:\s+)?(=)?(?:\s+)?'
         captures:
           1: { name: meta.keyword.$1.tf }
           2: { name: keyword.operator.assignment.tf }
@@ -365,11 +357,11 @@ repository:
 
   support-function-collection:
     name: support.function.builtin.collection.tf
-    match: '(?<!\.)\b(chunklist|coalescelist|coalesce|compact|concat|contains|distinct|element|flatten|index|keys|length|list|lookup|map|matchkeys|merge|range|reverse|setintersection|setproduct|setunion|slice|sort|transpose|values|zipmap)\b(?=\()'
+    match: '(?<!\.)\b(alltrue|anytrue|chunklist|coalescelist|coalesce|compact|concat|contains|distinct|element|flatten|index|keys|length|list|lookup|map|matchkeys|merge|one|range|reverse|setintersection|setproduct|setsubtract|setunion|slice|sort|transpose|values|zipmap)\b(?=\()'
 
   support-function-encoding:
     name: support.function.builtin.encoding.tf
-    match: '(?<!\.)\b(base64decode|base64encode|base64gzip|csvdecode|jsondecode|jsonencode|urlencode|yamldecode|yamlencode)\b(?=\()'
+    match: '(?<!\.)\b(base64decode|base64encode|base64gzip|csvdecode|jsondecode|jsonencode|textdecodebase64|textencodebase64|urlencode|yamldecode|yamlencode)\b(?=\()'
 
   support-function-filesystem:
     name: support.function.builtin.filesystem.tf
@@ -389,7 +381,7 @@ repository:
 
   support-function-conversion:
     name: support.function.builtin.conversion.tf
-    match: '(?<!\.)\b(tobool|tolist|tomap|tonumber|toset|tostring)\b(?=\()'
+    match: '(?<!\.)\b(can|defaults|nonsensitive|sensitive|tobool|tolist|tomap|tonumber|toset|tostring|try)\b(?=\()'
 
   constants-decimal:
     match: '\b\d+(\.)?(\d+)?'
@@ -418,7 +410,7 @@ repository:
     name: keyword.operator.ternary.tf
 
   keyword-comparison:
-    match: "~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]"
+    match: '\b(~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>])'
     name: keyword.operator.comparison.tf
 
   keyword-conditional:

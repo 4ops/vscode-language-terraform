@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.2
+
+- Added sensitive variable support
+- Fixed provider block inside required_providers
+
 ## 0.2.1
 
 - Added variable validation support ([#5](https://github.com/4ops/vscode-language-terraform/issues/5))
