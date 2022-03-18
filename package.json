@@ -61,7 +61,7 @@
 					"Terragrunt"
 				],
 				"extensions": [
-					"terragrunt.hcl"
+					".hcl"
 				],
 				"configuration": "./language-configuration.json"
 			},
