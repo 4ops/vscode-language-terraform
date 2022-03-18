@@ -41,6 +41,16 @@ Local values:
       ${1:name} = ${2:value}
     }
 
+Moved block:
+  scope: source.tf
+  prefix: moved
+  description: Used to refactor or rename existing resources safely.
+  body: |
+    moved {
+      from = "${1:old}"
+      to   = "${2:new}"
+    }
+
 Variable:
   scope: source.tf
   prefix: variable
