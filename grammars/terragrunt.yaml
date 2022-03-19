@@ -133,6 +133,35 @@ patterns:
           2: { name: keyword.operator.assignment.terragrunt }
       - include: "#definition-right"
 
+  - name: "meta.multipleinclude.terragrunt"
+    begin: '\b(include)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt entity.name.$1.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+      6: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#comments"
+      - match: '\b(path)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.output.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - match: '\b(expose)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.output.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+      - match: '\b(merge_strategy)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.output.attribute.terragrunt }
+          2: { name: keyword.operator.assignment.terragrunt }
+
+      - include: "#definition-right"
+
   - name: "meta.inputs.terragrunt"
     begin: '\b(inputs)([\w\-\"$])?(?:\s+)?(=)(?:\s+)?({)'
     beginCaptures:
