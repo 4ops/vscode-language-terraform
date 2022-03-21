@@ -2,7 +2,7 @@
 	"name": "terraform",
 	"displayName": "Terraform",
 	"description": "Terraform configuration language support (includes Terragrunt)",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"icon": "icon.png",
 	"keywords": [
 		"terraform",
