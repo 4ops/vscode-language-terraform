@@ -2,8 +2,8 @@
 
 ## 0.2.3
 
-- Added syntax hightlighting and snippet for `moved` blocks ([#18](https://github.com/4ops/vscode-language-terraform/pull/18). Thanks to [@hariscodes](https://github.com/hariscodes)
-- Added syntax highlighting for multiple include blocks in `terragrunt.hcl` ([#15](https://github.com/4ops/vscode-language-terraform/pull/15). Thanks to [@cruftyoldsysadmin](https://github.com/cruftyoldsysadmin)
+- Added syntax hightlighting and snippet for `moved` blocks ([#18](https://github.com/4ops/vscode-language-terraform/pull/18)). Thanks to [@hariscodes](https://github.com/hariscodes)
+- Added syntax highlighting for multiple include blocks in `terragrunt.hcl` ([#15](https://github.com/4ops/vscode-language-terraform/pull/15)). Thanks to [@cruftyoldsysadmin](https://github.com/cruftyoldsysadmin)
 
 ## 0.2.2
 
