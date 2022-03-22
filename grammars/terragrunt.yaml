@@ -179,6 +179,20 @@ patterns:
           2: { name: keyword.operator.assignment.terragrunt }
       - include: "#definition-right"
 
+  - name: "meta.inputs_function.terragrunt"
+    begin: '\b(inputs)([\w\-\"$])?(?:\s+)?(=)(?:\s+)?(merge|map|tomap|zipmap)?(\()'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: invalid.illegal.keyword.$1.terragrunt }
+      3: { name: keyword.operator.assignment.terragrunt }
+      4: { name: support.function.builtin.collection.terragrunt }
+      5: { name: punctuation.declaration.block.begin.terragrunt }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.terragrunt }
+    patterns:
+      - include: "#definition-right"
+
   - name: "meta.dependency.terragrunt"
     begin: '\b(dependency)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
     beginCaptures:
@@ -412,6 +426,80 @@ patterns:
       #   captures:
       #     1: { name: keyword.control.loop.terragrunt }
       - include: "#definition-right"
+  
+  - name: "meta.terragrunt_version_constraint.terragrunt"
+    match: '\b(terragrunt_version_constraint)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+  
+  - name: "meta.terraform_version_constraint.terragrunt"
+    match: '\b(terraform_version_constraint)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+  
+  - name: "meta.download_dir.terragrunt"
+    match: '\b(download_dir)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+  
+  - name: "meta.iam_role.terragrunt"
+    match: '\b(iam_role)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+
+  - name: "meta.iam_assume_role_session_name.terragrunt"
+    match: '\b(iam_assume_role_session_name)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+
+  - name: "meta.terraform_binary.terragrunt"
+    match: '\b(terraform_binary)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3:
+        { name: string.quoted.double.terragrunt punctuation.definition.string.begin.terragrunt }
+      4: { name: string.quoted.double.terragrunt }
+      5: { name: string.quoted.double.terragrunt punctuation.definition.string.end.terragrunt }
+
+  - name: "meta.prevent_destroy.terragrunt"
+    match: '\b(prevent_destroy)(?:\s+)?(=)(?:\s+)?(true|false)'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3: { name: constant.language.boolean.$1.terragrunt }
+  
+  - name: "meta.skip.terragrunt"
+    match: '\b(skip)(?:\s+)?(=)(?:\s+)?(true|false)'
+    captures:
+      1: { name: keyword.declaration.$1.terragrunt }
+      2: { name: keyword.operator.assignment.terragrunt }
+      3: { name: constant.language.boolean.$1.terragrunt }
 
   - include: "#invalid"
 
