@@ -458,7 +458,11 @@ repository:
       - include: "#blocks"
 
   escape-char:
-    match: '\\\"'
+    match: '\\[nrt"\\]'
+    name: constant.character.escape.tf
+  
+  escape-char-hex:
+    match: '\\u0[xX][0-9a-fA-F]+'
     name: constant.character.escape.tf
 
   string-interpolation:
@@ -493,6 +497,7 @@ repository:
     name: string.template.tf
     patterns:
       - include: "#escape-char"
+      - include: "#escape-char-hex"
       - match: '\$\${'
       - include: "#string-interpolation"
       - match: "%%{"
