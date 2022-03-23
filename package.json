@@ -2,7 +2,7 @@
 	"name": "terraform",
 	"displayName": "Terraform",
 	"description": "Terraform configuration language support (includes Terragrunt)",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"icon": "icon.png",
 	"keywords": [
 		"terraform",
@@ -110,7 +110,6 @@
 		"version": "npm run build -s"
 	},
 	"devDependencies": {
-		"vsce": "^1.64.0"
-	},
-	"dependencies": {}
+		"vsce": "^2.7.0"
+	}
 }

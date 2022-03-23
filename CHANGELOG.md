@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.4
+
+- Fix typo in changelog
+- Update dev dependencies
+
 ## 0.2.3
 
 - Added syntax hightlighting and snippet for `moved` blocks ([#18](https://github.com/4ops/vscode-language-terraform/pull/18)). Thanks to [@hariscodes](https://github.com/hariscodes)
