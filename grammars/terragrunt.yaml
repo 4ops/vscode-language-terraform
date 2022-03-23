@@ -631,7 +631,11 @@ repository:
       - include: "#blocks"
 
   escape-char:
-    match: '\\\"'
+    match: '\\[nrt"\\]'
+    name: constant.character.escape.terragrunt
+  
+  escape-char-hex:
+    match: '\\u0[xX][0-9a-fA-F]+'
     name: constant.character.escape.terragrunt
 
   string-interpolation:
@@ -666,6 +670,7 @@ repository:
     name: string.template.terragrunt
     patterns:
       - include: "#escape-char"
+      - include: "#escape-char-hex"
       - match: '\$\${'
       - include: "#string-interpolation"
       - match: "%%{"
