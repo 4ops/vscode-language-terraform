@@ -12,3 +12,9 @@ include {
 inputs = {
 
 }
+
+locals {
+  namespace    = trimsuffix(replace(var.namespace, "\\", "/"), "/")
+  test_escape = "\n \r \t \" \\ \u0x06 \u0x100b0f"
+  name_prefix  = "/${local.namespace}"
+}
