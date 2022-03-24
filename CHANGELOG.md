@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.2.5
+
+- Added support for all `.hcl` files ([#21](https://github.com/4ops/vscode-language-terraform/pull/21)). Thanks to [@hariscodes](https://github.com/hariscodes)
+- Fix syntax highlighting issues for `terraform_version_constraint` and `terragrunt_version_constraint` ([#22](https://github.com/4ops/vscode-language-terraform/pull/22)). Thanks to [@hariscodes](https://github.com/hariscodes)
+- Fixed escape character regex ([#23](https://github.com/4ops/vscode-language-terraform/pull/23)). Thanks to [@hariscodes](https://github.com/hariscodes)
+
 ## 0.2.4
 
 - Fix typo in changelog
