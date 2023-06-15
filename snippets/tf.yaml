@@ -142,6 +142,23 @@ Data http:
       }
     }
 
+Check http:
+Variable:
+  scope: source.tf
+  prefix: check-http
+  description: Input variable.
+  body: |
+    check ${1:name} {
+      data http ${2:name} {
+        url = ${3|"https://","http://",var.,data.,local.,module.|}
+      }
+
+      assert {
+        condition = ${4:boolean_expression}
+        error_message = ${5:error_string}
+      }
+    }
+
 # --- Provider: Terraform
 
 Data from remote terraform state:
