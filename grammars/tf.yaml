@@ -118,6 +118,23 @@ patterns:
           2: { name: keyword.operator.assignment.tf }
       - include: "#definition-right"
 
+  - name: "meta.import.tf"
+    begin: '\b(import)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.tf }
+      2: { name: invalid.illegal.keyword.$1.tf }
+      3: { name: punctuation.declaration.block.begin.tf }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.tf }
+    patterns:
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?!=|>|<)'
+        captures:
+          1: { name: variable.other.readwrite.tf }
+          2: { name: keyword.operator.assignment.tf }
+      - include: "#definition-right"
+
+
   - name: "meta.module.tf"
     begin: '\b(module)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
     beginCaptures:
